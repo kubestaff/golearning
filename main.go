@@ -19,12 +19,17 @@ func main() {
 
 	s.Handle("/", HandleIndex)
 	s.Handle("/status", HandleStatus)
+	s.Handle("/me", HandleMe)
 	s.Handle("/months", HandleMonths)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
 
 	s.Start()
+}
+
+func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me.html", nil
 }
 
 type Color struct {
