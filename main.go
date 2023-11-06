@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
 
@@ -23,16 +24,12 @@ func main() {
 	s.Handle("/me2", HandleMe2)
 	s.Handle("/me3", HandleMe3)
 	s.Handle("/months", HandleMonths)
-	s.Handle("/me", HandleMe)
+	s.Handle("/me", user.HandleMe)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
 
 	s.Start()
-}
-
-func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
-	return "html/me.html", nil
 }
 
 type Color struct {
