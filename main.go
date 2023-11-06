@@ -19,7 +19,7 @@ func main() {
 
 	s.Handle("/", HandleIndex)
 	s.Handle("/status", HandleStatus)
-	s.Handle("/me", HandleMe)
+	s.Handle("/me2", HandleMe2)
 	s.Handle("/months", HandleMonths)
 	s.Handle("/me", HandleMe)
 	s.HandleJSON("/colors", HandleJsonOutput)
@@ -165,8 +165,8 @@ func HandleStatus(inputs server.Input) (filename string, placeholders map[string
 	return "html/status.html", nil
 }
 
-func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
-	return "html/me.html", nil}
+func HandleMe2(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me2.html", nil}
 
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	variables := map[string]string{"%name%": "Max Mustermann"}
