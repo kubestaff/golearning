@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/kubestaff/web-helper/server"
 	"net/http"
 	"time"
+
+	"github.com/kubestaff/web-helper/server"
 )
 
 func main() {
@@ -19,12 +20,19 @@ func main() {
 
 	s.Handle("/", HandleIndex)
 	s.Handle("/status", HandleStatus)
+	s.Handle("/me2", HandleMe2)
+	s.Handle("/me3", HandleMe3)
 	s.Handle("/months", HandleMonths)
+	s.Handle("/me", HandleMe)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
 
 	s.Start()
+}
+
+func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me.html", nil
 }
 
 type Color struct {
@@ -158,6 +166,12 @@ func HandleJsonOutput(input server.Input) (o server.Output) {
 func HandleStatus(inputs server.Input) (filename string, placeholders map[string]string) {
 	return "html/status.html", nil
 }
+func HandleMe3(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me3.html", nil
+}
+
+func HandleMe2(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me2.html", nil}
 
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	variables := map[string]string{"%name%": "Max Mustermann"}
