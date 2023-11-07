@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
+	"net/http"
+	"time"
 )
 
 func main() {
@@ -168,7 +167,8 @@ func HandleMe3(inputs server.Input) (filename string, placeholders map[string]st
 }
 
 func HandleMe2(inputs server.Input) (filename string, placeholders map[string]string) {
-	return "html/me2.html", nil}
+	return "html/me2.html", nil
+}
 
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	variables := map[string]string{"%name%": "Max Mustermann"}
