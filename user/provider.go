@@ -7,7 +7,7 @@ func (p Provider) GetAll() []User {
 		{
 			Id:       1,
 			Name:     "Funto Awoyelu",
-			Age:      0,
+			Age:      27,
 			JobTitle: "Programme Manager",
 			Image:    "funto.png",
 			Characteristics: []string{
@@ -26,7 +26,7 @@ func (p Provider) GetAll() []User {
 			BackgroundColor: "#f6e3d4",
 			NameFontColor:   "#929522",
 			JobFontColor:    "#777",
-			About:           "",
+			About:           "This is a part of my golearning project",
 		},
 		{
 			Id:              2,
