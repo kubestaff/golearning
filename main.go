@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/kubestaff/web-helper/server"
 	"net/http"
 	"time"
+
+	"github.com/kubestaff/web-helper/server"
 )
 
 func main() {
@@ -19,6 +20,8 @@ func main() {
 
 	s.Handle("/", HandleIndex)
 	s.Handle("/status", HandleStatus)
+	s.Handle("/hello-world", HandleHelloWorld)
+	s.Handle("/me", HandleMe)
 	s.Handle("/months", HandleMonths)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
@@ -26,6 +29,16 @@ func main() {
 
 	s.Start()
 }
+
+func HandleHelloWorld(inputs server.Input) (filename string, placeholders map[string]string){
+	return "html/hello-world.html", nil
+}
+
+// Me webpage
+func HandleMe(inputs server.Input) (filename string, placeholders map[string]string){
+	return "html/me.html", nil
+}
+
 
 type Color struct {
 	Name string
