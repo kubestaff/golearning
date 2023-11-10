@@ -25,6 +25,7 @@ func main() {
 	s.Handle("/me3", HandleMe3)
 	s.Handle("/months", HandleMonths)
 	s.Handle("/me", user.HandleMe)
+	s.Handle("/me4", HandleMe4)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
@@ -201,4 +202,7 @@ func HandleMonths(input server.Input) (filename string, placeholders map[string]
 	}
 
 	return "html/month.html", output
+}
+func HandleMe4(inputs server.Input) (filename string, placeholders map[string]string) {
+	return "html/me4.html", nil
 }
