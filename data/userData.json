@@ -92,9 +92,5 @@
         "JobFontColor": "#777",
         "AgeFontColor": "#9fd116",
         "About": "I'm Matt Smith"
-    },
-    {
-        "Id": 6,
-        "Name": "User 6"
     }
 ]
