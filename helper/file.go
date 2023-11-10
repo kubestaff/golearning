@@ -22,13 +22,13 @@ func SaveJSONFile(fileName string, data any) error {
 func ReadFromJSONFile(fileName string, targetData any) error {
 	file, err := os.ReadFile(fileName)
 	if err != nil {
-		return err 
+		return err
 	}
 
-err = json.Unmarshal(file, targetData)
-if err != nil {
-	return err 
-}
+	err = json.Unmarshal(file, targetData)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
