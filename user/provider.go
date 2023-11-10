@@ -99,6 +99,18 @@ func (p Provider) SaveUsers() error {
 			Age:             38,
 			JobTitle:        "Software Developer",
 			Image:           "mattsmith.png",
+			Characteristics: []string{
+				"White hair",
+				"Dark brown eyes",
+			},
+			Likes: []string{
+				"Good food",
+				"Long walks",
+			},
+			Dislikes: []string{
+				"Cats",
+				"Fireworks",
+			},
 			BackgroundColor: "#333",
 			NameFontColor:   "#fff",
 			JobFontColor:    "#777",
