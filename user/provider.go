@@ -93,6 +93,18 @@ func (p Provider) SaveUsers() error {
 			AgeFontColor:    "#9fd116",
 			About:           "I'm Sam",
 		},
+		{
+			Id:              5,
+			Name:            "Matt Smith",
+			Age:             38,
+			JobTitle:        "Software Developer",
+			Image:           "mattsmith.png",
+			BackgroundColor: "#333",
+			NameFontColor:   "#fff",
+			JobFontColor:    "#777",
+			AgeFontColor:    "#9fd116",
+			About:           "I'm Matt Smith",
+		},
 	}
 
 	return helper.SaveJSONFile(FileName, users)
