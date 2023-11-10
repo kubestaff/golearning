@@ -31,93 +31,14 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	return User{}, false, nil
 }
 
-func (p Provider) SaveUsers() error {
-	users := []User{
-		{
-			Id:       1,
-			Name:     "Funto Awoyelu",
-			Age:      27,
-			JobTitle: "Programme Manager",
-			Image:    "funto.png",
-			Characteristics: []string{
-				"Dark brown hair",
-				"Dark brown eyes",
-				"5ft 3 height",
-			},
-			Likes: []string{
-				"Reading",
-				"Shopping",
-			},
-			Dislikes: []string{
-				"Rudeness",
-				"Celery",
-			},
-			BackgroundColor: "#f6e3d4",
-			NameFontColor:   "#929522",
-			JobFontColor:    "#777",
-			About:           "This is a part of my golearning project",
-			AgeFontColor:    "#000000",
-		},
-		{
-			Id:              2,
-			Name:            "Farah",
-			Age:             26,
-			JobTitle:        "Aspiring software engineer",
-			Image:           "pexels-photo-992734.jpeg",
-			BackgroundColor: "#000000",
-			NameFontColor:   "#952424",
-			JobFontColor:    "#ffffff",
-			AgeFontColor:    "#ffffff",
-		},
-		{
-			Id:              3,
-			Name:            "Moses Osho",
-			Age:             26,
-			JobTitle:        "Associate Developer",
-			Image:           "spidermen.jpeg",
-			BackgroundColor: "#333",
-			NameFontColor:   "#fff",
-			JobFontColor:    "#777",
-			AgeFontColor:    "#9fd116",
-			About:           "I have built this page as part of my golearning bootcamp.",
-		},
-		{
-			Id:              4,
-			Name:            "Sam Jobs",
-			Age:             33,
-			JobTitle:        "CEO",
-			Image:           "spidermen.jpeg",
-			BackgroundColor: "#333",
-			NameFontColor:   "#fff",
-			JobFontColor:    "#777",
-			AgeFontColor:    "#9fd116",
-			About:           "I'm Sam",
-		},
-		{
-			Id:              5,
-			Name:            "Matt Smith",
-			Age:             38,
-			JobTitle:        "Software Developer",
-			Image:           "mattsmith.png",
-			Characteristics: []string{
-				"White hair",
-				"Dark brown eyes",
-			},
-			Likes: []string{
-				"Good food",
-				"Long walks",
-			},
-			Dislikes: []string{
-				"Cats",
-				"Fireworks",
-			},
-			BackgroundColor: "#333",
-			NameFontColor:   "#fff",
-			JobFontColor:    "#777",
-			AgeFontColor:    "#9fd116",
-			About:           "I'm Matt Smith",
-		},
-	}
-
+func (p Provider) SaveUsers(users *[]User) error {
 	return helper.SaveJSONFile(FileName, users)
+}
+
+func (p Provider) SaveUser(user *User) error {
+	//find a user
+	//if user is found replace it in the file
+	//if user is not found add it at the bottom
+	//if file cannot be saved, return an error
+	return nil
 }
