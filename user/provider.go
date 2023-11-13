@@ -36,9 +36,35 @@ func (p Provider) SaveUsers(users *[]User) error {
 }
 
 func (p Provider) SaveUser(user *User) error {
-	//find a user
+	//find a user 
 	//if user is found replace it in the file
 	//if user is not found add it at the bottom
 	//if file cannot be saved, return an error
-	return nil
+
+	 users := []User
+
+    // Load existing users from file
+    err := helper.SaveJSONFile(FileName, &users)
+    if err != nil {
+        return err
+    }
+
+    // Check if the user already exists
+    userExists := false
+    for i, u := range users {
+        if u.ID == user.Id { // User struct has the Id field in model.go file 
+            users[i] = *user
+            userExists = true
+            break
+        }
+    }
+
+    // If user doesn't exist, add to the list
+    if !userExists {
+        users = append(users, *user)
+    }
+
+    // Save the updated list back to the file
+    return helper.SaveJSONFile(FileName, &users)
+	
 }

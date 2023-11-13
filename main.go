@@ -6,6 +6,7 @@ import (
 	"github.com/kubestaff/web-helper/server"
 )
 
+
 func main() {	
 	opts := server.Options{
 		Port: 34567,
@@ -18,6 +19,7 @@ func main() {
 
 	s.Handle("/", home.HandleHome)
 	s.Handle("/me", user.HandleMe)
+	
 
 	s.Start()
 }
