@@ -2,6 +2,7 @@ package user
 
 import (
 	"os"
+	"encoding/json"
 
 	"github.com/kubestaff/golearning/helper"
 )
@@ -39,22 +40,32 @@ func (p Provider) SaveUsers(users *[]User) error {
 	return helper.SaveJSONFile(FileName, users)
 }
 
-func (p Provider) SaveUser(user *User) (usr User, isFound bool, err error) {
+func (p Provider) SaveUser(user *User, Id int) error {
 	users, err := p.GetAll()
 	if err!= nil {
-		return User{}, false,err
+		return err
 	}
 
-	for _, usr := range users {
-	newUser, err := append(os.WriteFile(FileName,User, 0654))
-		if user.Name != user.Name{
-
+	for _, usr := range users{
+	if usr.Id != Id{
+		helper.SaveJSONFile(FileName, user)
 		}
-	}
 	
+		jsonData, err := json.Marshal(user)
+		if err != nil {
+			return err
+		}
+	
+		err = os.WriteFile(FileName, jsonData, 0644)
+	if err != nil {
+		return err
+	}
+
+	}
+
+	return nil
+}
 	//find a user
 	//if user is found replace it in the file
 	//if user is not found add it at the bottom
 	//if file cannot be saved, return an error
-	return nil
-}
