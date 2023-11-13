@@ -1,6 +1,10 @@
 package user
 
-import "github.com/kubestaff/golearning/helper"
+import (
+	"os"
+
+	"github.com/kubestaff/golearning/helper"
+)
 
 type Provider struct{}
 
@@ -35,7 +39,19 @@ func (p Provider) SaveUsers(users *[]User) error {
 	return helper.SaveJSONFile(FileName, users)
 }
 
-func (p Provider) SaveUser(user *User) error {
+func (p Provider) SaveUser(user *User) (usr User, isFound bool, err error) {
+	users, err := p.GetAll()
+	if err!= nil {
+		return User{}, false,err
+	}
+
+	for _, usr := range users {
+	newUser, err := append(os.WriteFile(FileName,User, 0654))
+		if user.Name != user.Name{
+
+		}
+	}
+	
 	//find a user
 	//if user is found replace it in the file
 	//if user is not found add it at the bottom
