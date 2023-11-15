@@ -92,5 +92,30 @@
         "JobFontColor": "#777",
         "AgeFontColor": "#9fd116",
         "About": "I'm Matt Smith"
+    },
+    {
+        "Id": 6,
+        "Name": "Najat Yusuf",
+        "Age": 22,
+        "JobTitle": "Software Developer",
+        "Image": "",
+        "Characteristics": [
+            "Dark brown hair",
+            "Dark brown eyes"
+        ],
+        "Likes": [
+            "Reading",
+            "Coding"
+        ],
+        "Dislikes": [
+            "Loud people",
+            "Dogs"
+        ],
+        "BackgroundColor": "#333",
+        "NameFontColor": "#fff",
+        "JobFontColor": "#777",
+        "AgeFontColor": "#9fd116",
+        "About": "I am a software engineer."
     }
+
 ]
