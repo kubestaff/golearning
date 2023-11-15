@@ -59,7 +59,28 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 
 func (p Provider) updateSetting(setting *UserSetting) error {
 	//todo implement this method
-	return nil
+	existingSettings, err := p.GetAll()
+	if err != nil {
+		return err
+	}
+
+	index := -1
+	for i, existingSettings := range existingSettings {
+		if existingSettings.Id == setting.Id {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		return errors.New("Setting not found")
+	}
+
+	if existingSettings[index].UserId != setting.UserId {
+		existingSettings[index].UserId = setting.UserId
+	}
+
+	return p.SaveSettings(&existingSettings)
 }
 
 func (p Provider) insertSetting(setting *UserSetting) error {
