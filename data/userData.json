@@ -92,5 +92,30 @@
         "JobFontColor": "#777",
         "AgeFontColor": "#9fd116",
         "About": "I'm Matt Smith"
+    },
+    {
+        "Id": 6,
+        "Name": "Judith Ukaegbu",
+        "Age": 33,
+        "JobTitle": "Software Engineer",
+        "Image": "judith-u.jpeg",
+        "Characteristics": [
+            "Dark Brown hair",
+            "Dark brown eyes",
+            "5ft 6 height"
+        ],
+        "Likes": [
+            "Baking/Cooking",
+            "Fitness"
+        ],
+        "Dislikes": [
+            "Coconut",
+            "Injustice"
+        ],
+        "BackgroundColor": "#e4f9f5",
+        "NameFontColor": "#66bfbf",
+        "JobFontColor": "#777",
+        "AgeFontColor": "#777",
+        "About": "This is a part of my golearning project"
     }
 ]
