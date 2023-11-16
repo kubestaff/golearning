@@ -117,5 +117,31 @@
         "JobFontColor": "#777",
         "AgeFontColor": "#777",
         "About": "This is a part of my golearning project"
+    },
+    {
+        "Id": 7,
+        "Name": "Sarah Oladunjoye",
+        "Age": 26,
+        "JobTitle": "Client Advisor",
+        "Image": "Flower.JPG",
+        "Characteristics": [
+            "Dark Brown hair",
+            "Brown eyes",
+            "5ft 7 height"
+        ],
+        "Likes": [
+            "Food",
+            "Travelling"
+        ],
+        "Dislikes": [
+            "Coffee",
+            "Cats"
+
+        ],
+        "BackgroundColor": "#e4f9f5",
+        "NameFontColor": "#66bfbf",
+        "JobFontColor": "#777",
+        "AgeFontColor": "#777",
+        "About": "Sarah's me page"
     }
 ]
