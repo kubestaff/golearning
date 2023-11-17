@@ -50,7 +50,7 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 	// update mode:
 	// compare your existing object with your new object if there no changes just exist the update function
 	// if there are changes then you should replace existing object with the new one
-	if newSetting.Id != 0 {
+	if newSetting.Id == 0 {
 		return p.insertSetting(newSetting)
 	}
 
@@ -59,13 +59,35 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 
 func (p Provider) updateSetting(setting *UserSetting) error {
 	//todo implement this method
-	return nil
+	existingSettings, err := p.GetAll()
+	if err != nil {
+		return err
+	}
+
+	_, foundIndex, found := p.findSettingById(existingSettings, setting.Id)
+
+	if !found {
+		return errors.New("setting not found to update")
+	}
+
+	foundSetting := existingSettings[foundIndex]
+
+	foundSetting.UserId = setting.UserId
+
+	if foundSetting.AmountOfUsersOnMainPage != setting.AmountOfUsersOnMainPage {
+		foundSetting.AmountOfUsersOnMainPage = setting.AmountOfUsersOnMainPage
+	}
+
+	existingSettings[foundIndex] = foundSetting
+
+	return p.SaveSettings(&existingSettings)
 }
 
 func (p Provider) insertSetting(setting *UserSetting) error {
 	existingSettings, err := p.GetAll()
 
-	if errors.Is(err, os.ErrNotExist) {
+	if os.IsNotExist(err) {
+		setting.Id = len(existingSettings) + 1
 		settingsToSave := []UserSetting{
 			*setting,
 		}
@@ -75,8 +97,18 @@ func (p Provider) insertSetting(setting *UserSetting) error {
 	if err != nil {
 		return err
 	}
+	setting.Id = len(existingSettings) + 1
 
 	existingSettings = append(existingSettings, *setting)
 
 	return p.SaveSettings(&existingSettings)
+}
+
+func (p Provider) findSettingById(settings []UserSetting, id int) (*UserSetting, int, bool) {
+	for i, setting := range settings {
+		if setting.Id == id {
+			return &setting, i, true
+		}
+	}
+	return nil, -1, false
 }

@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"errors"
 	"os"
 	"strconv"
 
@@ -24,7 +23,7 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 	setting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
 
 	//if there is an error but this error is not about non existing file
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err != nil && !os.IsNotExist(err) {
 		return helper.HandleErr(err)
 	}
 
@@ -53,7 +52,7 @@ func HandleFormSetting(inputs server.Input) (filename string, placeholders map[s
 
 	settingsProvider := Provider{}
 	existingSetting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err != nil && !os.IsNotExist(err) {
 		return helper.HandleErr(err)
 	}
 
