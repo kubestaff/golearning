@@ -6,9 +6,14 @@ import (
 
 	"github.com/kubestaff/golearning/helper"
 	"github.com/kubestaff/web-helper/server"
+	"gorm.io/gorm"
 )
 
-func HandleReadSetting(inputs server.Input) (filename string, placeholders map[string]string) {
+type Handler struct {
+	DbConnection *gorm.DB
+}
+
+func (h Handler) HandleReadSetting(inputs server.Input) (filename string, placeholders map[string]string) {
 	userIdStr := inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
@@ -16,10 +21,12 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 	}
 
 	if inputs.Get("amountOfUsersOnMainPage") != "" {
-		return HandleFormSetting(inputs)
+		return h.HandleFormSetting(inputs)
 	}
 
-	settingsProvider := Provider{}
+	settingsProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
 	setting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
 
 	//if there is an error but this error is not about non existing file
@@ -38,7 +45,7 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 	return "html/setting.html", output
 }
 
-func HandleFormSetting(inputs server.Input) (filename string, placeholders map[string]string) {
+func (h Handler) HandleFormSetting(inputs server.Input) (filename string, placeholders map[string]string) {
 	amountOfUsersOnMainPageSubmittedStr := inputs.Get("amountOfUsersOnMainPage")
 	amountOfUsersOnMainPageSubmittedInt, err := strconv.Atoi(amountOfUsersOnMainPageSubmittedStr)
 	if err != nil {
@@ -50,7 +57,9 @@ func HandleFormSetting(inputs server.Input) (filename string, placeholders map[s
 		return helper.HandleErrorText("Invalid user id")
 	}
 
-	settingsProvider := Provider{}
+	settingsProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
 	existingSetting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
 	if err != nil && !os.IsNotExist(err) {
 		return helper.HandleErr(err)
@@ -62,7 +71,7 @@ func HandleFormSetting(inputs server.Input) (filename string, placeholders map[s
 	}
 
 	if isFound {
-		newSetting.Id = existingSetting.Id
+		newSetting.ID = existingSetting.ID
 	}
 
 	err = settingsProvider.SaveSetting(&newSetting)
