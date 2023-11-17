@@ -72,6 +72,8 @@ func (p Provider) updateSetting(setting *UserSetting) error {
 
 	foundSetting := existingSettings[foundIndex]
 
+	foundSetting.UserId = setting.UserId
+
 	if foundSetting.AmountOfUsersOnMainPage != setting.AmountOfUsersOnMainPage {
 		foundSetting.AmountOfUsersOnMainPage = setting.AmountOfUsersOnMainPage
 	}
