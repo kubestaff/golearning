@@ -1,13 +1,25 @@
 package main
 
 import (
+	"log"
+
+	"github.com/kubestaff/golearning/db"
 	"github.com/kubestaff/golearning/home"
 	"github.com/kubestaff/golearning/setting"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
 
-func main() {	
+func main() {
+	dbConn, err := db.CreateDataBase()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = db.Migrate(dbConn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	opts := server.Options{
 		Port: 34567,
 	}

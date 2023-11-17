@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:golearning}/golearning.db",
+            "name": "golearning"
+        }
+    ]
+}

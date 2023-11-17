@@ -23,7 +23,7 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	}
 
 	for _, user := range users {
-		if user.Id == id {
+		if int(user.ID) == id {
 			return user, true, nil
 		}
 	}
