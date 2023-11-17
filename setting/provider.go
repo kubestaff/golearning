@@ -64,22 +64,20 @@ func (p Provider) updateSetting(setting *UserSetting) error {
 		return err
 	}
 
-	index := -1
-	for i, existingSetting := range existingSettings {
-		if existingSetting.Id == setting.Id {
-			index = i
-			break
-		}
+	_, foundIndex, found := p.findSettingById(existingSettings, setting.Id)
+
+	if !found {
+		return errors.New("setting not found to update")
 	}
 
-	if index == -1 {
-		return errors.New("setting not found")
+	foundSetting := existingSettings[foundIndex]
+
+	if foundSetting.AmountOfUsersOnMainPage != setting.AmountOfUsersOnMainPage {
+		foundSetting.AmountOfUsersOnMainPage = setting.AmountOfUsersOnMainPage
 	}
 
-	if existingSettings[index].UserId != setting.UserId {
-		existingSettings[index].UserId = setting.UserId
-	}
-	
+	existingSettings[foundIndex] = foundSetting
+
 	return p.SaveSettings(&existingSettings)
 }
 
@@ -102,4 +100,13 @@ func (p Provider) insertSetting(setting *UserSetting) error {
 	existingSettings = append(existingSettings, *setting)
 
 	return p.SaveSettings(&existingSettings)
+}
+
+func (p Provider) findSettingById(settings []UserSetting, id int) (*UserSetting, int, bool) {
+	for i, setting := range settings {
+		if setting.Id == id {
+			return &setting, i, true
+		}
+	}
+	return nil, -1, false
 }
