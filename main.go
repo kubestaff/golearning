@@ -20,6 +20,7 @@ func main() {
 	s.Handle("/", HandleIndex)
 	s.Handle("/status", HandleStatus)
 	s.Handle("/hello-world",HandleHelloWorld )
+	s.Handle("/me",HandleHelloWorld )
 	s.Handle("/months", HandleMonths)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
