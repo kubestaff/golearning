@@ -2,25 +2,92 @@
 <html>
 
 <head>
-    <title>Funto Awoyelu profile</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
+    <title>Yoni Makanda CV - Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<body>
-    <div id="header" style="background-color: %backgroundColor%">
-        <img id="profile-image" src="/static/imgs/%image%" />
-        <div id="name" style="color: %nameColor%">%name%</div>
-        <div id="job-title" style="color: %jobColor%">%job-title%</div>
-        <div id="age" style="color: %ageColor%">%age%</div>
+        #header {
+            background-color: #faebd7;
+            color: #808080;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 20px auto;
+            object-fit: cover;
+        }
+
+        #main-content {
+            padding: 20px;
+        }
+
+        #name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #job-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #job-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 5px;
+        }
+    
+    </style>
+    </head>
+    <body>
+    <div id="header">
+        <img id="profile-image" src="static/profile.jpeg"/>
+        <h1 id="name">Yoni Makanda</h1>
+        <h2 id="job-title">Aspiring contactor Developer</h2>
+        <h2 id="age">37</h2>
     </div>
-    <div id="body">
-        <h2>Characteristics</h2>
-        %characteristics%
-        <h2>Likes</h2>
-        %likes%
-        <h2>Dislikes</h2>
-        %dislikes%
-        <h2>About</h2>
-        <p>%about%</p>
-    </div>
+
+    <div id="main-content">
+        <div class="section">
+            <h2>About</h2>
+            <p>This web page have been built in the cadre of my bootcamp</p>
+            <h2>Characteristics</h2>
+            <p><height:1m75></height:1m75></p>
+            <p><eyes-color:brown></eyes-color:brown></p>
+            <p><hair-color:dark></hair-color:dark></p>
+            <p><ethnicity:french-black></ethnicity:french-black></p>
+            <h2>Likes</h2>
+            <p>Read</p>
+            <p>Gym</p>
+            <p>Music</p>
+            <p>Coffee</p>
+            <p>Good food</p>
+
+            <h2>Dislikes</h2>
+            <p>To wait</p>
+            <p>Corliflower</p>    
+        </div>
+        
 </body>
+</html>

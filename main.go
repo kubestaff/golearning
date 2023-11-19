@@ -165,6 +165,10 @@ func HandleStatus(inputs server.Input) (filename string, placeholders map[string
 	return "html/status.html", nil
 }
 
+func HandleMe(inputs server.Input) (flename string, placeholders map[string]string) {
+	return "html/me.html", nil 
+}
+
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	variables := map[string]string{"%name%": "Max Mustermann"}
 	return "html/index.html", variables
