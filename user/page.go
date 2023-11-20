@@ -63,12 +63,12 @@ func (h Handler) HandleMe(inputs server.Input) (filename string, placeholders ma
 }
 
 func (h Handler) HandleReadUser(inputs server.Input) (filename string, placeholders map[string]string) {
-
 	if inputs.Get("name") != "" || inputs.Get("age") != "" || inputs.Get("job-title") != "" || inputs.Get("image") != "" || inputs.Get("about") != "" || inputs.Get("backgroundColor") != "" || inputs.Get("nameColor") != "" || inputs.Get("jobColor") != "" || inputs.Get("ageColor") != "" {
-		return h.HandleCreateUser(inputs)
+		return h.HandleChangeUser(inputs)
 	}
 
 	output := map[string]string{
+		"%id%":              "",
 		"%name%":            "",
 		"%age%":             "0",
 		"%job-title%":       "",
@@ -79,11 +79,50 @@ func (h Handler) HandleReadUser(inputs server.Input) (filename string, placehold
 		"%jobColor%":        "",
 		"%ageColor%":        "",
 	}
+	if inputs.Get("id") != "" {
+		userIdStr := inputs.Values.Get("id")
+		userIdInt, err := strconv.Atoi(userIdStr)
+		if err != nil {
+			return helper.HandleErrorText("Invalid user id")
+		}
+
+		userProvider := Provider{
+			DbConnection: h.DbConnection,
+		}
+
+		usr, isFound, err := userProvider.GetUserById(userIdInt)
+		if err != nil {
+			return helper.HandleErr(err)
+		}
+		if isFound {
+			output["%id%"] = userIdStr
+			output["%name%"] = usr.Name
+			output["%age%"] = strconv.Itoa(usr.Age)
+			output["%job-title%"] = usr.JobTitle
+			output["%image%"] = usr.Image
+			output["%about%"] = usr.About
+			output["%backgroundColor%"] = usr.BackgroundColor
+			output["%nameColor%"] = usr.NameFontColor
+			output["%jobColor%"] = usr.JobFontColor
+			output["%ageColor%"] = usr.AgeFontColor
+		}
+	}
 
 	return "html/userForm.html", output
 }
 
-func (h Handler) HandleCreateUser(inputs server.Input) (filename string, placeholders map[string]string) {
+func (h Handler) HandleChangeUser(inputs server.Input) (filename string, placeholders map[string]string) {
+	userIdStr := inputs.Values.Get("id")
+
+	userIdInt := 0
+	var err error
+	if userIdStr != "" {
+		userIdInt, err = strconv.Atoi(userIdStr)
+		if err != nil {
+			return helper.HandleErrorText("Invalid user id")
+		}
+	}
+
 	name := inputs.Get("name")
 	ageStr := inputs.Get("age")
 	jobTitle := inputs.Get("job-title")
@@ -113,13 +152,18 @@ func (h Handler) HandleCreateUser(inputs server.Input) (filename string, placeho
 		JobFontColor:    jobColor,
 		AgeFontColor:    ageColor,
 	}
-	err = userProvider.SaveUser(&user)
 
+	if userIdInt > 0 {
+		user.ID = uint(userIdInt)
+	}
+
+	err = userProvider.SaveUser(&user)
 	if err != nil {
 		return helper.HandleErr(err)
 	}
 
 	output := map[string]string{
+		"%id%":              userIdStr,
 		"%name%":            name,
 		"%age%":             ageStr,
 		"%job-title%":       jobTitle,
@@ -132,4 +176,36 @@ func (h Handler) HandleCreateUser(inputs server.Input) (filename string, placeho
 	}
 
 	return "html/userForm.html", output
+}
+
+func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeholders map[string]string) {
+	userIdStr := inputs.Values.Get("id")
+
+	userIdInt := 0
+	var err error
+	if userIdStr != "" {
+		userIdInt, err = strconv.Atoi(userIdStr)
+		if err != nil {
+			return helper.HandleErrorText("Invalid user id")
+		}
+	}
+
+	userProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
+	usr, isFound, err := userProvider.GetUserById(userIdInt)
+	if err != nil {
+		return helper.HandleErr(err)
+	}
+
+	if !isFound {
+		return helper.HandleErrorText("User id is not found")
+	}
+
+	err = userProvider.DeleteUser(&usr)
+	if err != nil {
+		return helper.HandleErr(err)
+	}
+
+	return "html/success.html", map[string]string{"%success%": "Successfully deleted user"}
 }
