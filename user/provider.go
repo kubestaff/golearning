@@ -1,6 +1,9 @@
 package user
 
-import "github.com/kubestaff/golearning/helper"
+import (
+	"errors"
+	"gorm.io/gorm"
+)
 
 type Provider struct{
 	DbConnection *gorm.DB
@@ -43,10 +46,6 @@ func (p Provider) SaveUser(usr *User) error {
 		return err
 	}
 
-func (p Provider) SaveUser(user *User) error {
-	//find a user
-	//if user is found replace it in the file
-	//if user is not found add it at the bottom
-	//if file cannot be saved, return an error
 	return nil
 }
+
