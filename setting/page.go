@@ -98,10 +98,10 @@ func (h Handler) HandleDeleteSetting(inputs server.Input) (filename string, plac
 		}
 	}
 
-	userProvider := Provider{
+	settingProvider := Provider{
 		DbConnection: h.DbConnection,
 	}
-	usr, isFound, err := userProvider.GetSettingByUserId(userIdInt)
+	usr, isFound, err := settingProvider.GetSettingByUserId(userIdInt)
 	if err != nil {
 		return helper.HandleErr(err)
 	}
@@ -110,7 +110,7 @@ func (h Handler) HandleDeleteSetting(inputs server.Input) (filename string, plac
 		return helper.HandleErrorText("User id is not found")
 	}
 
-	err = userProvider.DeleteSetting(&usr)
+	err = settingProvider.DeleteSetting(&usr)
 	if err != nil {
 		return helper.HandleErr(err)
 	}
