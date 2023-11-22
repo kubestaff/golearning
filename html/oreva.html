@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>CV - John Doe</title>
+    <title>Oreva</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Gill Sans", sans-serif;
             margin: 0;
             padding: 0;
         }
 
         #header {
-            background-color: #333;
-            color: #fff;
+            background-color: #f6e3d4;
+            color: #929522;
             padding: 20px;
             text-align: center;
+        }
+
+        #body {
+            margin-left: 25px;
         }
 
         #profile-image {
@@ -51,35 +56,40 @@
         .section p {
             margin-bottom: 5px;
         }
+
+        li {
+            list-style-type: none;
+            margin-bottom: 5px;
+        }
     </style>
+
 </head>
+
 <body>
-<div id="header">
-    <img id="profile-image" src="/static/headshot.jpeg"/>
-    <h1 id="name">%name%</h1>
-    <h2 id="job-title">Software engineer</h2>
-</div>
-
-<div id="main-content">
-    <div class="section">
-        <h2>Summary</h2>
-        <p>I love poetry.</p>
+    <div id="header">
+        <img id="profile-image" src="/static/headshot.jpeg" />
+        <div id="name">Oreva Ansel</div>
+        <div id="job-title">Programme Manager</div>
     </div>
-
-    <div class="section">
-        <h2>Education</h2>
-        <p>Bachelor of Science in Geophysics, XYZ University, 2015</p>
-    </div>
-
-    <div class="section">
-        <h2>Experience</h2>
-        <p>Web Developer, QWERTY Company, 2020 - Present</p>
+    <div id="body">
+        <h2>Characteristics</h2>
         <ul>
-            <li>Developed and maintained company websites</li>
-            <li>Collaborated with design and marketing teams to implement website improvements</li>
+            <li>Dark brown hair</li>
+            <li>Dark brown eyes</li>
+            <li>5ft 3 height </li>
+        </ul>
+        <h2>Likes</h2>
+        <ul>
+            <li>Reading</li>
+            <li>Shopping</li>
+            <li>Good food</li>
+            <li>Exploring in nature </li>
+            <li>Meeting new people</li>
+        </ul>
+        <h2>Dislikes</h2>
+        <ul>
+            <li>Rudeness</li>
+            <li>Celery</li>
         </ul>
     </div>
-</div>
-
 </body>
-</html>
