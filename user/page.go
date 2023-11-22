@@ -1,6 +1,7 @@
 package user
 
 import (
+	"image"
 	"strconv"
 
 	"github.com/kubestaff/golearning/helper"
@@ -86,6 +87,13 @@ func (h Handler) HandleCreateUser(inputs server.Input) (filename string, placeho
 	user := User{
 		Name: name,
 		Age: ageInt,
+		JobTitle: JobTitle,
+		Image: image,
+		BackgroundColor: backgroundColor,
+		NameFontColor: NameColor,
+		JobFontColor: JobColor,
+		AgeFontColor: AgeColor, 
+		About: about,
 	}
 	err = userProvider.SaveUser(&user)
 
