@@ -9,6 +9,7 @@
 <body>
     <h1>User</h1>
     <form method="get" name="user">
+        <input name="id" type="hidden" id="id" value="%id%">
         <p>
             <label for="name">User Name</label>
             <input name="name" type="text" id="name" value="%name%">
@@ -17,6 +18,34 @@
             <label for="age">Age</label>
             <input name="age" type="number" id="age" min="0" max="100"
                 value="%age%">
+        </p>
+        <p>
+            <label for="job-title">Job Title</label>
+            <input name="job-title" type="text" id="job-title" value="%job-title%">
+        </p>
+        <p>
+            <label for="image">Image</label>
+            <input name="image" type="file" id="image" value="%image%" accept="image/png, image/jpeg">
+        </p>
+        <p>
+            <label for="about">About</label>
+            <input name="about" type="text" id="about" value="%about%">
+        </p> 
+        <p>
+            <label for="backgroundColor">Backgound Color</label>
+            <input name="backgroundColor" type="text" id="backgroundColor" value="%backgroundColor%">
+        </p>
+        <p>
+            <label for="nameColor">Name Color</label>
+            <input name="nameColor" type="text" id="nameColor" value="%nameColor%">
+        </p> 
+        <p>
+            <label for="jobColor">Job Color</label>
+            <input name="jobColor" type="text" id="jobColor" value="%jobColor%">
+        </p>
+        <p>
+            <label for="ageColor">Age Color</label>
+            <input name="ageColor" type="text" id="ageColor" value="%ageColor%">
         </p>
         <p>
             <button type="submit">Save</button>
