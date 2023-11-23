@@ -2,7 +2,7 @@ module github.com/kubestaff/golearning
 
 go 1.21.2
 
-require github.com/kubestaff/web-helper v0.0.6
+require github.com/kubestaff/web-helper v0.0.7
 
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
