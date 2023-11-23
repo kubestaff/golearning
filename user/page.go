@@ -7,9 +7,9 @@ import (
 )
 
 func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
-	userIdStr :=inputs.Values.Get("id")
+	userIdStr := inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
-	if err !=nil {
+	if err != nil {
 		//todo
 		return "", nil
 	}
@@ -22,7 +22,10 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 	}
 
 	variables := map[string]string{
-		"%name%": user.Name,
+		"%name%":      user.Name,
+		"%job-title%": user.JobTitle,
+		"%age%":       strconv.Itoa(user.Age),
+		"%image%":     user.Image,
 	}
 	return "html/me.html", variables
 }

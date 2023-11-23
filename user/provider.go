@@ -1,50 +1,53 @@
 package user
 
-type Provider struct {}
+type Provider struct{}
 
 func (p Provider) GetAll() []User {
 	return []User {
 		{
 			Id: 1,
-			Name: "DR3",
-			Age: 23,
-			JobTitle: "pharmacist",
+			Name: "Oreva",
+			Age: 88,
+			JobTitle: "programmer",
+			Image: "headshot.jpeg",
 			Characteristics: []string{
-				"Red hair",
-				"Brown eyes",
+				"black hair",
+				"brown eyes",
 			},
 			Likes: []string{
-				"F1",
-				"Horses",
+				"Poetry",
+				"football",
 			},
-			Dislikes: []string {
-				"Mushroom",
-				"Rude people",
+			Dislikes: []string{
+				"dishonesty",
+				"slime",
 			},
-			BackgroundColour: "#3EBBC2",
-			JobFontColour: "#4741BE",
-			About: "I love watching movies and being with family.",
+			BackgroundColor: "#ffff",
+			JobFontColor: "#777",
+			About: "i love liverpool football club",
 		},
 		{
+
 			Id: 2,
-			Name: "Abrar",
-			Age: 26,
-			JobTitle: "Lawyer",
+			Name: "Ansel",
+			Age: 78,
+			JobTitle: "Software dev",
+			Image: "siren.png",
 			Characteristics: []string{
-				"Blonde hair",
-				"Brown eyes",
+				"white hair",
+				"black eyes",
 			},
 			Likes: []string{
-				"Going on holidays",
-				"Horses",
+				"skiing",
+				"football",
 			},
-			Dislikes: []string {
-				"Mushroom",
-				"Rude people",
+			Dislikes: []string{
+				"lies",
+				"slime",
 			},
-			BackgroundColour: "#3EBBC2",
-			JobFontColour: "#4741BE",
-			About: "I love watching movies and being with family.",
+			BackgroundColor: "#f6e3d4",
+			JobFontColor: "#777",
+			About: "i love to skate",
 		},
 	}
 }

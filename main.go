@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/kubestaff/web-helper/server"
 	"net/http"
-	"time"
+
+	"github.com/kubestaff/golearning/user"
+	"github.com/kubestaff/web-helper/server"
 )
 
 func main() {
@@ -18,13 +19,7 @@ func main() {
 	defer s.Stop()
 
 	s.Handle("/", HandleIndex)
-	s.Handle("/status", HandleStatus)
-	s.Handle("/months", HandleMonths)
-	s.Handle("/me", HandleOreva)
-	s.Handle("/ammal", HandleAmmal)
-	s.Handle("/oreva", HandleOreva)
-	s.Handle("/DR3", HandleDR3)
-	s.Handle("/abrar", HandleAbrar)
+	s.Handle("/me", user.HandleMe)
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
@@ -160,60 +155,7 @@ func HandleJsonOutput(input server.Input) (o server.Output) {
 	}
 }
 
-func HandleStatus(inputs server.Input) (filename string, placeholders map[string]string) {
-	return "html/status.html", nil
-}
-
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	variables := map[string]string{"%name%": "Max Mustermann"}
 	return "html/index.html", variables
-}
-
-func HandleMonths(input server.Input) (filename string, placeholders map[string]string) {
-	months := map[string]string{
-		"1":  "Jan",
-		"2":  "Feb",
-		"3":  "Mar",
-		"4":  "Apr",
-		"5":  "Mai",
-		"6":  "Jun",
-		"7":  "Jul",
-		"8":  "Aug",
-		"9":  "Sep",
-		"10": "Oct",
-		"11": "Nov",
-		"12": "Dec",
-	}
-
-	givenMonthNumber := input.Get("month")
-	if givenMonthNumber == "" {
-		givenMonthNumber = time.Now().Format("1")
-	}
-
-	output := map[string]string{
-		"%month%": fmt.Sprintf("Number %s is month %s", givenMonthNumber, months[givenMonthNumber]),
-	}
-
-	return "html/month.html", output
-}
-
-func HandleAbrar(inputs server.Input) (filename string, placeholders map[string]string) {
-	variables := map[string]string{"%name%": "Abrar Al-Habtari"}
-	return "html/abrar.html", variables
-}
-
-
-func HandleDR3(inputS server.Input) (filename string, placeholders map[string]string) {
-	variables := map[string]string{"%name%": "Daniel Ricciardo"}
-	return "html/DR3.html", variables
-}
-
-	func HandleAmmal(inputs server.Input) (filename string, placeholders map[string]string) {
-		variables := map[string]string{"%name%": "Ammal Alnaggar"}
-		return "html/ammal.html", variables
-}
-
-func HandleOreva(inputs server.Input) (filename string, placeholders map[string]string) {
-	variables := map[string]string{"%name%": "Oreva Eniworo"}
-	return "html/me.html", variables
 }
