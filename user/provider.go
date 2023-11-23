@@ -9,6 +9,7 @@ func (p Provider) GetAll() []User {
 			Name: "Oreva",
 			Age: 88,
 			JobTitle: "programmer",
+			Image: "headshot.jpeg",
 			Characteristics: []string{
 				"black hair",
 				"brown eyes",
@@ -31,6 +32,7 @@ func (p Provider) GetAll() []User {
 			Name: "Ansel",
 			Age: 78,
 			JobTitle: "Software dev",
+			Image: "siren.png",
 			Characteristics: []string{
 				"white hair",
 				"black eyes",
