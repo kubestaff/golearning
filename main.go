@@ -24,7 +24,7 @@ func main() {
 	s.HandleJSON("/colors", HandleJsonOutput)
 	s.HandleJSON("/add-color", HandleJsonInputFromParams)
 	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
-
+	
 	s.Start()
 }
 
