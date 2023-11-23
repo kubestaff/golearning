@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package user 
 
 type User struct {
@@ -13,3 +14,20 @@ type User struct {
 	JobFrontColour string 
 	About string 
 }
+=======
+package user
+
+type User struct {
+	Id              int
+	Name            string
+	Age             int
+	JobTitle        string
+	Image           string
+	Characteristics []string
+	Likes           []string
+	Dislikes        []string
+	BackgroundColor string
+	JobFontColor    string
+	About           string
+}
+>>>>>>> oreva-main
