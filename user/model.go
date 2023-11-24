@@ -1,14 +1,16 @@
 package user
 
+import "gorm.io/gorm"
+
 type User struct {
-	Id              int
+	gorm.Model
 	Name            string
 	Age             int
 	JobTitle        string
 	Image           string
-	Characteristics []string
-	Likes           []string
-	Dislikes        []string
+	Characteristics []string `gorm:"-"`
+	Likes           []string `gorm:"-"`
+	Dislikes        []string `gorm:"-"`
 	BackgroundColor string
 	NameFontColor   string
 	JobFontColor    string
