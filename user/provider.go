@@ -9,7 +9,7 @@ type Provider struct{
 	DbConnection *gorm.DB
 }
 
-func (p Provider) GetAll() ([]User, error) {
+func (p Provider) GetAll() ([]User, error) { //Read
 	users := []User{}
 	result := p.DbConnection.Find(&users)
 
@@ -21,7 +21,7 @@ func (p Provider) GetAll() ([]User, error) {
 	return users, nil
 }
 
-func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
+func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) { //Read
 	usr = User{}
 
 	result := p.DbConnection.First(&usr, id)
@@ -38,8 +38,19 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	return usr, true, nil
 }
 
-func (p Provider) SaveUser(usr *User) error {
+func (p Provider) SaveUser(usr *User) error { //Update/Create
 	result := p.DbConnection.Save(usr)
+	
+	err := result.Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p Provider) DeleteUser(usr *User) error { //Delete
+	result := p.DbConnection.Delete(usr, usr.ID)
 	
 	err := result.Error
 	if err != nil {
