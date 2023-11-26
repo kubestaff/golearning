@@ -52,25 +52,25 @@ func (p Provider) GetAll() []User {
 		{
 
 			Id: 3,
-			Name: "Ammal",
+			Name: "Charles Leclerc",
 			Age: 20,
-			JobTitle: "F1 track analyst",
-			Image: "iron-man.png",
+			JobTitle: "F1 Ferarri Racer",
+			Image: "cl16.png",
 			Characteristics: []string{
-				"black hair",
-				"brown eyes",
+				"brown hair",
+				"green eyes",
 			},
 			Likes: []string{
 				"F1",
-				"Video games",
+				"Yachts",
 			},
 			Dislikes: []string{
-				"Loud eaters",
-				"Waiting",
+				"Bad team strategist",
+				"Losing",
 			},
 			BackgroundColor: "#E598A7",
 			JobFontColor: "#8A2337",
-			About: "I love Marvel and F1",
+			About: "I love F1",
 		},
 	}
 }
