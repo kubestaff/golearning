@@ -49,6 +49,29 @@ func (p Provider) GetAll() []User {
 			JobFontColor: "#777",
 			About: "i love to skate",
 		},
+		{
+
+			Id: 3,
+			Name: "Ammal",
+			Age: 20,
+			JobTitle: "F1 track analyst",
+			Image: "iron-man.png",
+			Characteristics: []string{
+				"black hair",
+				"brown eyes",
+			},
+			Likes: []string{
+				"F1",
+				"Video games",
+			},
+			Dislikes: []string{
+				"Loud eaters",
+				"Waiting",
+			},
+			BackgroundColor: "#E598A7",
+			JobFontColor: "#8A2337",
+			About: "I love Marvel and F1",
+		},
 	}
 }
 
