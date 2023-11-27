@@ -51,6 +51,29 @@ func (p Provider) GetAll() []User {
 		},
 		{
 
+			Id: 3,
+			Name: "Charles Leclerc",
+			Age: 20,
+			JobTitle: "F1 Ferarri Racer",
+			Image: "cl16.png",
+			Characteristics: []string{
+				"brown hair",
+				"green eyes",
+			},
+			Likes: []string{
+				"F1",
+				"Yachts",
+			},
+			Dislikes: []string{
+				"Bad team strategist",
+				"Losing",
+			},
+			BackgroundColor: "#E598A7",
+			JobFontColor: "#8A2337",
+			About: "I love F1",
+		},
+		{
+
 			Id: 4,
 			Name: "Brittany Wilson",
 			Age: 24,
