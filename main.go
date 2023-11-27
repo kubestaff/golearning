@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/kubestaff/golearning/db"
-	"github.com/kubestaff/golearning/home"
 	"github.com/kubestaff/golearning/setting"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
@@ -32,18 +31,16 @@ func main() {
 	settingsHandler := setting.Handler{
 		DbConnection: dbConn,
 	}
-	homeHandler := home.Handler{
-		DbConnection: dbConn,
-	}
+
 	userHandler := user.Handler{
 		DbConnection: dbConn,
 	}
 
-	s.HandleJSON("/", homeHandler.HandleHome)
-	s.HandleJSON("/me", userHandler.HandleMe)
-	s.Handle("/user", userHandler.HandleReadUser)
+	s.HandleJSON("/users", userHandler.HandleUsers)
+	s.HandleJSON("/user-delete", userHandler.HandleDeleteUser)
+	s.HandleJSON("/user-change", userHandler.HandleChangeUser)
+
 	s.Handle("/setting", settingsHandler.HandleReadSetting)
-	s.Handle("/user-delete", userHandler.HandleDeleteUser)
 
 	s.Start()
 }
