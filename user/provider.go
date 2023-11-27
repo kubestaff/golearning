@@ -95,6 +95,7 @@ func (p Provider) GetAll() []User {
 		About: "I love to hike",
 	},
   }
+}
 
 func (p Provider) GetUserById(id int) (usr User, isFound bool) {
 	users := p.GetAll()
