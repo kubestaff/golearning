@@ -49,7 +49,30 @@ func (p Provider) GetAll() []User {
 			JobFontColor: "#777",
 			About: "i love to skate",
 		},
-        {
+		{
+
+			Id: 4,
+			Name: "Brittany Wilson",
+			Age: 24,
+			JobTitle: "Tycoon daughter",
+			Image: "Wilson Sisters.png",
+			Characteristics: []string{
+				"blonde hair",
+				"blue eyes",
+			},
+			Likes: []string{
+				"Shopping",
+				"Latrell Spencer",
+			},
+			Dislikes: []string{
+				"Heather and Megan Vandergeld",
+				"When baby poops",
+			},
+			BackgroundColor: "#6C3BC4",
+			JobFontColor: "#EBE4F7",
+			About: "I like shopping with Tiffany.",
+		},
+    {
 		Id: 5,
 		Name: "Daniel Ricciardo",
 		Age: 34,
@@ -72,7 +95,7 @@ func (p Provider) GetAll() []User {
 		About: "I love to hike",
 	},
   }
-}
+
 func (p Provider) GetUserById(id int) (usr User, isFound bool) {
 	users := p.GetAll()
 
