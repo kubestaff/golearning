@@ -72,7 +72,52 @@ func (p Provider) GetAll() []User {
 			JobFontColor: "#8A2337",
 			About: "I love F1",
 		},
-	}
+		{
+
+			Id: 4,
+			Name: "Brittany Wilson",
+			Age: 24,
+			JobTitle: "Tycoon daughter",
+			Image: "Wilson Sisters.png",
+			Characteristics: []string{
+				"blonde hair",
+				"blue eyes",
+			},
+			Likes: []string{
+				"Shopping",
+				"Latrell Spencer",
+			},
+			Dislikes: []string{
+				"Heather and Megan Vandergeld",
+				"When baby poops",
+			},
+			BackgroundColor: "#6C3BC4",
+			JobFontColor: "#EBE4F7",
+			About: "I like shopping with Tiffany.",
+		},
+    {
+		Id: 5,
+		Name: "Daniel Ricciardo",
+		Age: 34,
+		JobTitle: "F1 Alpha Tauri driver",
+		Image: "DR3.png",
+		Characteristics: []string{
+			"brown hair",
+			"brown eyes",
+		},
+		Likes: []string{
+			"Swimming",
+			"Golf",
+		},
+		Dislikes: []string{
+			"Bad drivers",
+			"mushrooms",
+		},
+		BackgroundColor: "#CF7F9A",
+		JobFontColor: "#B0709A",
+		About: "I love to hike",
+	},
+  }
 }
 
 func (p Provider) GetUserById(id int) (usr User, isFound bool) {
