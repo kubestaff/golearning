@@ -24,11 +24,12 @@ func ReadFromJSONFile(fileName string, targetData any) error {
 	if err != nil {
 		return err
 	}
-
+	
 	err = json.Unmarshal(file, targetData)
-	if err != nil {
+	if err != nil
 		return err
-	}
+   }
+	
+   return nil
 
-	return nil
-}
+

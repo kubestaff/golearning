@@ -3,103 +3,26 @@
 
 <head>
     <title>Yoni Makanda CV - Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        #header {
-            background-color: #faebd7;
-            color: #808080;
-            padding: 20px;
-            text-align: center;
-        }
-
-        #profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 20px auto;
-            object-fit: cover;
-        }
-
-        #main-content {
-            padding: 20px;
-        }
-
-        #name {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        #job-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        #job-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #888;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .section p {
-            margin-bottom: 5px;
-        }
-
-        li{
-           list-style-type: none;
-           margin-bottom: 5px;
-        }
-    
-    </style>
+    <link rel="stylesheet" href="/static/css/main.css">
     </head>
     <body>
-    <div id="header">
-        <img id="profile-image" src="static/profile.jpeg"/>
-        <h1 id="name">Yoni Makanda</h1>
-        <p id="job-title">Aspiring contactor Developer</p>
-        <h2 id="age">37</h2>
+    <div id="header" style="background-color: %backgroundColor%;">
+        <img id="profile-image" src="/static/imgs/%image%"/>
+        <div id="name" style="color: %nameColor%">%name%</div>
+        <div id="job-title" style="color: %jobcolor%">%job-title%</div>
+        <div id="age" style="color: %ageColor%">%age%</div>
     </div>
 
     <div id="main-content">
         <div class="section">
             <h2>About</h2>
-            <p>This web page have been built in the cadre of my bootcamp</p>
+            <p>%about%</p>
             <h2>Characteristics</h2>
-            <ul>
-            <li>height:1m75</li>
-            <li>eyes-color:brown</li>
-            <li>hair-color:dark</li>
-            <li>ethnicity:french-black</li>
-            </ul>
-
+            %characteristics%
             <h2>Likes</h2>
-            <ul>
-            <li>Read</li>
-            <li>Gym</li>
-            <li>Music</li>
-            <li>Coffee</li>
-            <li>Good food</li>
-            </ul>
-
+            %likes%
             <h2>Dislikes</h2>
-            <ul>
-            <li>To wait</li>
-            <li>Corliflower</li> 
-            </ul>ul>   
-        </div>
-        
+            %dislikes%    
+        </div>        
 </body>
 </html>

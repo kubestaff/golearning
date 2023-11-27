@@ -1,18 +1,14 @@
 body {
-    font-family: "Gill Sans", sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 #header {
-    background-color: #e4e4e4;
-    color: #111111;
+    background-color: #faebd7;
+    color: #808080;
     padding: 20px;
     text-align: center;
-}
-
-#body {
-    margin-left: 25px;
 }
 
 #profile-image {
@@ -35,7 +31,12 @@ body {
 #job-title {
     font-size: 18px;
     margin-bottom: 20px;
-    color: #111111;
+}
+
+#job-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #888;
 }
 
 .section {
@@ -51,10 +52,11 @@ body {
     margin-bottom: 5px;
 }
 
-li {
-    list-style-type: none;
-    margin-bottom: 5px;
+li{
+   list-style-type: none;
+   margin-bottom: 5px;
 }
+
 
 #main{
     display: table;
