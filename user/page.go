@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/kubestaff/golearning/helper"
@@ -17,7 +18,7 @@ type Handler struct {
 	DbConnection *gorm.DB
 }
 
-func (h Handler) HandleMe(inputs server.Input) server.Output {
+func (h Handler) HandleUser(inputs server.Input) server.Output {
 	userIdStr := inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
@@ -60,123 +61,129 @@ func (h Handler) HandleMe(inputs server.Input) server.Output {
 	}
 }
 
-func (h Handler) HandleReadUser(inputs server.Input) (filename string, placeholders map[string]string) {
-	if inputs.Get("name") != "" || inputs.Get("age") != "" || inputs.Get("job-title") != "" || inputs.Get("image") != "" || inputs.Get("about") != "" || inputs.Get("backgroundColor") != "" || inputs.Get("nameColor") != "" || inputs.Get("jobColor") != "" || inputs.Get("ageColor") != "" {
-		return h.HandleChangeUser(inputs)
+func (h Handler) HandleUsers(inputs server.Input) (o server.Output) {
+	userIdStr := inputs.Values.Get("id")
+	if userIdStr != "" {
+		return h.HandleUser(inputs)
 	}
 
-	output := map[string]string{
-		"%id%":              "",
-		"%name%":            "",
-		"%age%":             "0",
-		"%job-title%":       "",
-		"%image%":           "",
-		"%about%":           "",
-		"%backgroundColor%": "",
-		"%nameColor%":       "",
-		"%jobColor%":        "",
-		"%ageColor%":        "",
-	}
-	if inputs.Get("id") != "" {
-		userIdStr := inputs.Values.Get("id")
-		userIdInt, err := strconv.Atoi(userIdStr)
-		if err != nil {
-			return helper.HandleErrorText("Invalid user id")
-		}
-
-		userProvider := Provider{
-			DbConnection: h.DbConnection,
-		}
-
-		usr, isFound, err := userProvider.GetUserById(userIdInt)
-		if err != nil {
-			return helper.HandleErr(err)
-		}
-		if isFound {
-			output["%id%"] = userIdStr
-			output["%name%"] = usr.Name
-			output["%age%"] = strconv.Itoa(usr.Age)
-			output["%job-title%"] = usr.JobTitle
-			output["%image%"] = usr.Image
-			output["%about%"] = usr.About
-			output["%backgroundColor%"] = usr.BackgroundColor
-			output["%nameColor%"] = usr.NameFontColor
-			output["%jobColor%"] = usr.JobFontColor
-			output["%ageColor%"] = usr.AgeFontColor
-		}
+	provider := Provider{
+		DbConnection: h.DbConnection,
 	}
 
-	return "html/userForm.html", output
+	users, err := provider.GetAll()
+	if err != nil {
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		}
+	}
+	return server.Output{
+		Data: users,
+		Code: 200,
+	}
 }
 
-func (h Handler) HandleChangeUser(inputs server.Input) (filename string, placeholders map[string]string) {
-	userIdStr := inputs.Values.Get("id")
+func (h Handler) HandleChangeUser(serverInput server.Input) (output server.Output) {
+	userIdStr := serverInput.Values.Get("id")
 
 	userIdInt := 0
 	var err error
 	if userIdStr != "" {
 		userIdInt, err = strconv.Atoi(userIdStr)
 		if err != nil {
-			return helper.HandleErrorText("Invalid user id")
+			return server.Output{
+				Data: server.JsonError{
+					Error: err.Error(),
+					Code:  400,
+				},
+				Code: 400,
+			}
 		}
 	}
 
-	name := inputs.Get("name")
-	ageStr := inputs.Get("age")
-	jobTitle := inputs.Get("job-title")
-	image := inputs.Get("image")
-	about := inputs.Get("about")
-	backgroundColor := inputs.Get("backgroundColor")
-	nameColor := inputs.Get("nameColor")
-	jobColor := inputs.Get("jobColor")
-	ageColor := inputs.Get("ageColor")
-	ageInt, err := strconv.Atoi(ageStr)
+	userFromInput := User{}
+	err = serverInput.Scan(&userFromInput)
 	if err != nil {
-		return helper.HandleErrorText("Invalid age: a non-numeric value is provided: " + ageStr)
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  400,
+			},
+			Code: 400,
+		}
 	}
 
 	userProvider := Provider{
 		DbConnection: h.DbConnection,
 	}
 
-	user := User{
-		Name:            name,
-		Age:             ageInt,
-		JobTitle:        jobTitle,
-		Image:           image,
-		About:           about,
-		BackgroundColor: backgroundColor,
-		NameFontColor:   nameColor,
-		JobFontColor:    jobColor,
-		AgeFontColor:    ageColor,
-	}
-
 	if userIdInt > 0 {
-		user.ID = uint(userIdInt)
+		userFromInput.ID = uint(userIdInt)
+		userFromDB, isFound, err := userProvider.GetUserById(userIdInt)
+		if err != nil {
+			return server.Output{
+				Data: server.JsonError{
+					Error: err.Error(),
+					Code:  500,
+				},
+				Code: 500,
+			}
+		}
+		if !isFound {
+			return server.Output{
+				Data: server.JsonError{
+					Error: "User id is not found",
+					Code:  404,
+				},
+				Code: 404,
+			}
+		}
+
+		if userFromInput.Name == "" {
+		   userFromInput.Name = userFromDB.Name
+		} 
+		if userFromInput.About == "" {
+			userFromInput.About = userFromDB.About
+		 } 
+		 if userFromInput.Age == 0 {
+			userFromInput.Age = userFromDB.Age
+		 }
+		 if userFromInput.JobTitle == "" {
+			userFromInput.JobTitle = userFromDB.JobTitle
+		 }
 	}
 
-	err = userProvider.SaveUser(&user)
+	err = userProvider.SaveUser(&userFromInput)
 	if err != nil {
-		return helper.HandleErr(err)
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		}
 	}
 
-	output := map[string]string{
-		"%id%":              userIdStr,
-		"%name%":            name,
-		"%age%":             ageStr,
-		"%job-title%":       jobTitle,
-		"%image%":           image,
-		"%about%":           about,
-		"%backgroundColor%": backgroundColor,
-		"%nameColor%":       nameColor,
-		"%jobColor%":        jobColor,
-		"%ageColor%":        ageColor,
+	responseCode := 200
+	message := "Successfully updated user"
+	if userIdInt == 0 {
+		responseCode = 201
+		message = "Successfully created user"
 	}
 
-	return "html/userForm.html", output
+	return server.Output{
+		Data: helper.Success{
+			Message: message,
+		},
+		Code: responseCode,
+	}
 }
 
-func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeholders map[string]string) {
+func (h Handler) HandleDeleteUser(inputs server.Input) (output server.Output) {
 	userIdStr := inputs.Values.Get("id")
 
 	userIdInt := 0
@@ -184,7 +191,13 @@ func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeho
 	if userIdStr != "" {
 		userIdInt, err = strconv.Atoi(userIdStr)
 		if err != nil {
-			return helper.HandleErrorText("Invalid user id")
+			return server.Output{
+				Data: server.JsonError{
+					Error: err.Error(),
+					Code:  400,
+				},
+				Code: 400,
+			}
 		}
 	}
 
@@ -193,17 +206,40 @@ func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeho
 	}
 	usr, isFound, err := userProvider.GetUserById(userIdInt)
 	if err != nil {
-		return helper.HandleErr(err)
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		}
 	}
 
 	if !isFound {
-		return helper.HandleErrorText("User id is not found")
+		return server.Output{
+			Data: server.JsonError{
+				Error: "User id is not found",
+				Code:  404,
+			},
+			Code: 404,
+		}
 	}
 
 	err = userProvider.DeleteUser(&usr)
 	if err != nil {
-		return helper.HandleErr(err)
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		}
 	}
 
-	return "html/success.html", map[string]string{"%success%": "Successfully deleted user"}
+	return server.Output{
+		Data: helper.Success{
+			Message: fmt.Sprintf("Successfully deleted user %d", userIdInt),
+		},
+		Code: 200,
+	}
 }
