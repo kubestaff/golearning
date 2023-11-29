@@ -48,18 +48,11 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 
 	return nil
 }
-func (p Provider) DeleteSetting(setting *UserSetting) error { //Delete
-	result := p.DbConnection.Delete(setting, UserSetting{})
-
-	err := result.Error
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func (p Provider) DeleteSetting(newSetting *UserSetting) error { //Delete
+	if newSetting.ID <= 0 {
+		return errors.New("setting id not found")
+	}
 	result := p.DbConnection.Delete(newSetting, newSetting.ID)
 	
 	err := result.Error

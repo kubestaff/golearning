@@ -86,11 +86,7 @@ func (h Handler) HandleFormSetting(inputs server.Input) (filename string, placeh
 
 	return "html/setting.html", output
 }
-<<<<<<< HEAD
-func (h Handler) HandleDeleteSetting(inputs server.Input) (filename string, placeholders map[string]string) {
-=======
 func (h Handler) HandleDeleteUserSetting(inputs server.Input) (filename string, placeholders map[string]string) {
->>>>>>> main
 	userIdStr := inputs.Values.Get("id")
 
 	userIdInt := 0
@@ -98,16 +94,6 @@ func (h Handler) HandleDeleteUserSetting(inputs server.Input) (filename string, 
 	if userIdStr != "" {
 		userIdInt, err = strconv.Atoi(userIdStr)
 		if err != nil {
-<<<<<<< HEAD
-			return helper.HandleErrorText("Invalid User id")
-		}
-	}
-
-	settingProvider := Provider{
-		DbConnection: h.DbConnection,
-	}
-	usr, isFound, err := settingProvider.GetSettingByUserId(userIdInt)
-=======
 			return helper.HandleErrorText("Invalid user id")
 		}
 	}
@@ -116,31 +102,18 @@ func (h Handler) HandleDeleteUserSetting(inputs server.Input) (filename string, 
 		DbConnection: h.DbConnection,
 	}
 	usr, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
->>>>>>> main
 	if err != nil {
 		return helper.HandleErr(err)
 	}
 
 	if !isFound {
-<<<<<<< HEAD
-		return helper.HandleErrorText("User id is not found")
-	}
-
-	err = settingProvider.DeleteSetting(&usr)
-=======
 		return helper.HandleErrorText("setting for user id is not found")
 	}
 
 	err = settingsProvider.DeleteSetting(&usr)
->>>>>>> main
 	if err != nil {
 		return helper.HandleErr(err)
 	}
 
-<<<<<<< HEAD
-	return "html/success.html", map[string]string{"%success%": "Successfully deleted setting"}
-}
-=======
 	return "html/success.html", map[string]string{"%success%": "Successfully deleted user setting"}
 }
->>>>>>> main
