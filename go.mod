@@ -15,7 +15,7 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	golang.org/x/sys v0.14.0 // indirect
 	gorm.io/gorm v1.25.5 // indirect
-	modernc.org/libc v1.34.4 // indirect
+	modernc.org/libc v1.34.7 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.7.2 // indirect
 	modernc.org/sqlite v1.27.0 // indirect

@@ -58,3 +58,14 @@ func (p Provider) DeleteSetting(setting *UserSetting) error { //Delete
 
 	return nil
 }
+
+func (p Provider) DeleteSetting(newSetting *UserSetting) error { //Delete
+	result := p.DbConnection.Delete(newSetting, newSetting.ID)
+	
+	err := result.Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
