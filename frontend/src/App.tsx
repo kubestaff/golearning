@@ -1,38 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const backendUrl = "http://localhost:34567";
-
-function Users() {
-  const [users, setUsers] = useState<any[]>([])
-
-  const fetchUserData = () => {
-    fetch(backendUrl)
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        setUsers(data)
-      })
-      .catch(error => console.error(error));
-  }
-
-  useEffect(() => {
-    fetchUserData()
-  }, [])
-
-  return (
-    <div>
-      {users.length > 0 && (
-        <ul>
-          {users.map(user => (
-            <li key={user.ID}>{user.Name}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+import Users from './components/Users';
 
 function App() {
   return (
