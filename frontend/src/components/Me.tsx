@@ -23,7 +23,7 @@ export default function Me() {
             .catch((error) => console.error(error));
     };
 
-    useEffect(() => fetchUser("User"), []);
+    useEffect(() => fetchUser("5"), []);
     return (
         <div>
             <User
