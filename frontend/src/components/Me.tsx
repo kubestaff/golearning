@@ -4,7 +4,7 @@ import User from './User';
 
 const backendUrl = "http://localhost:34567/users";
 
-export default function Users() {
+export default function Me() {
   const [users, setUsers] = useState<any[]>([])
 
   const fetchUserData = function() {
