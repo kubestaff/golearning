@@ -5,12 +5,6 @@ import { response } from "express";
 
 const backendUrl = "http://localhost:34567/users";
 
-interface AprResponse {
-    ID: string;
-    Name: string;
-    Age: number;
-    JobTitle: string;
-}
 
 export default function Me() {
     const [user, setUser] = useState<any>();
