@@ -29,18 +29,16 @@ export default function Me() {
             .catch((error) => console.error(error));
     };
 
-    useEffect(() => {
-        fetchUser("");
-    }, []);
-return (
-    <div>
-        <User
-        id= {user.ID}
-        name= {user.Name}
-        age= {user.Age}
-        jobTitle={user.jobTitle}
-        />
-    </div>
-)
+    useEffect(() => fetchUser("User"), []);
+    return (
+        <div>
+            <User
+                id={user.ID}
+                name={user.Name}
+                age={user.Age}
+                jobTitle={user.jobTitle}
+            />
+        </div>
+    );
 
 }
