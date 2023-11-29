@@ -27,7 +27,7 @@ export default function Users() {
       {users.length > 0 && (
         <ul>
           {users.map(user => (
-            <User id={user.ID} name={user.Name} age={user.Age} jobTitle={user.JobTitle}/>
+            <li> <User id={user.ID} name={user.Name} age={user.Age} jobTitle={user.JobTitle}/> </li>
           ))}
         </ul>
       )}
