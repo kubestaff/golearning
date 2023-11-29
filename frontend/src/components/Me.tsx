@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import User from "./User";
 import { response } from "express";
 
-const backendUrl = "http://localhost:34567/users";
+const backendUrl = "http://localhost:34567/user";
 
 
 export default function Me() {
