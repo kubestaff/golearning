@@ -24,7 +24,7 @@ func (h Handler) HandleUser(inputs server.Input) server.Output {
 	if err != nil {
 		return server.Output{
 			Data: server.JsonError{
-				Error: err.Error(),
+				Error: fmt.Sprintf("Invalid number %s provided", userIdStr),
 				Code:  400,
 			},
 			Code: 400,
