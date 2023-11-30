@@ -7,5 +7,5 @@ type User = {
 }
 
 export default function User({id, name, age, jobTitle}: User) {
-    return <div> <li key={id}>{name} [{age}] - {jobTitle}</li> </div>
+    return <div> key={id} {name} [{age}] - {jobTitle}</div>
 }

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import User from "./User";
-import { response } from "express";
 
 const backendUrl = "http://localhost:34567/user";
 
 
-export default function Me() {
+export default function Me(_userid: any) {
     const [user, setUser] = useState<any>();
 
     const fetchUser = function (userid: string) {
@@ -23,7 +22,7 @@ export default function Me() {
             .catch((error) => console.error(error));
     };
 
-    useEffect(() => fetchUser("5"), []);
+    useEffect(() => fetchUser(""), []);
     return (
         <div>
             <User
