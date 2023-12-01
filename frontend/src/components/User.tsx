@@ -1,3 +1,4 @@
+import Button from 'react-bootstrap/Button';
 
 type User = {
     id: string,
@@ -7,5 +8,8 @@ type User = {
 }
 
 export default function User({id, name, age, jobTitle}: User) {
-    return <li key={id}>{name} [{age}] - {jobTitle} <a href="/users-change/{id}">Edit</a></li>
+    return (<div key={id}>{name} [{age}] - {jobTitle} 
+        <Button href={`/users-change/${id}`} size="sm" className="ms-1 mb-1" variant="outline-info">Edit</Button>
+    </div>
+    )
 }
