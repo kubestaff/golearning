@@ -22,9 +22,11 @@ func (p Provider) GetAll() []User {
 				"dishonesty",
 				"slime",
 			},
-			BackgroundColor: "#ffff",
+			BackgroundColor: "#271F30",
+			NameFontColor: "#0000",
 			JobFontColor: "#777",
 			About: "i love liverpool football club",
+			AgeFontColor: "#6C5A49",
 		},
 		{
 
@@ -46,8 +48,10 @@ func (p Provider) GetAll() []User {
 				"slime",
 			},
 			BackgroundColor: "#f6e3d4",
+			NameFontColor: "#110B06",
 			JobFontColor: "#777",
 			About: "i love to skate",
+			AgeFontColor: "#F87F0E",
 		},
 		{
 
@@ -69,8 +73,10 @@ func (p Provider) GetAll() []User {
 				"Losing",
 			},
 			BackgroundColor: "#E598A7",
+			NameFontColor: "#070300",
 			JobFontColor: "#8A2337",
 			About: "I love F1",
+			AgeFontColor: "#DAD0B1",
 		},
 		{
 
@@ -92,8 +98,10 @@ func (p Provider) GetAll() []User {
 				"When baby poops",
 			},
 			BackgroundColor: "#6C3BC4",
+			NameFontColor: "D0FCB3",
 			JobFontColor: "#EBE4F7",
 			About: "I like shopping with Tiffany.",
+			AgeFontColor: "#609040",
 		},
     {
 		Id: 5,
@@ -114,8 +122,10 @@ func (p Provider) GetAll() []User {
 			"mushrooms",
 		},
 		BackgroundColor: "#CF7F9A",
+		NameFontColor: "#58D505",
 		JobFontColor: "#B0709A",
 		About: "I love to hike",
+		AgeFontColor: "#9BC59D",
 	},
   }
 }

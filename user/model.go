@@ -10,6 +10,8 @@ type User struct {
 	Likes           []string
 	Dislikes        []string
 	BackgroundColor string
+	NameFontColor   string
 	JobFontColor    string
+	AgeFontColor    string
 	About           string
 }
