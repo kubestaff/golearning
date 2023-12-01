@@ -13,7 +13,7 @@ export default function User({ id, name, age, jobTitle }: User) {
     return <li key={id}>{name} [{age}] - {jobTitle} <a href="/users-change/{id}">Edit</a></li>
 }
 
-export function Me(_userid: string) {
+export function Me(userid: string) {
     const [user, setUser] = useState<any>();
 
     const fetchUser = function (userid: string) {
@@ -30,7 +30,7 @@ export function Me(_userid: string) {
             .catch((error) => console.error(error));
     };
 
-    useEffect(() => fetchUser(""), []);
+    useEffect(() => fetchUser(userid), []);
     return (
         <div>
             <User
