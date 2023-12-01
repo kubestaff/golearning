@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import Stack from "react-bootstrap/Stack";
+
 import User from './User';
 
 const backendUrl = "http://localhost:34567/users";
@@ -22,14 +24,14 @@ export default function Users() {
   }, [])
 
   return (
-    <div>
+    <Stack>
       {users.length > 0 && (
-        <ul>
+        <>
           {users.map(user => (
             <User id={user.ID} name={user.Name} age={user.Age} jobTitle={user.JobTitle}/>
           ))}
-        </ul>
+         </>
       )}
-    </div>
+    </Stack>
   );
 }
