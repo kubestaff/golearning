@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import User from './User';
+import User from './Me';
 
 const backendUrl = "http://localhost:34567/users";
 
