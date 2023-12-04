@@ -122,10 +122,10 @@ func (p Provider) GetAll() []User {
 			"mushrooms",
 		},
 		BackgroundColor: "#CF7F9A",
-		NameFontColor: "#58D505",
-		JobFontColor: "#B0709A",
+		NameFontColor: "#CCB833",
+		JobFontColor: "#2F73D0",
 		About: "I love to hike",
-		AgeFontColor: "#9BC59D",
+		AgeFontColor: "#2F73D0",
 	},
   }
 }
