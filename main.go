@@ -27,6 +27,7 @@ func main() {
 
 	s.Handle("/", home.HandleHome)
 	s.Handle("/me10", user.HandleMe10 )
+	s.Handle("/setting", setting.HandleReadSetting)
 	
 	s.Start()
 }

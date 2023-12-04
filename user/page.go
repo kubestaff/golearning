@@ -8,7 +8,7 @@ import (
 
 )
 
-func HandleMe10(inputs server.Input) (flename string, placeholders map[string]string) {
+func HandleMe10(inputs server.Input) (filename string, placeholders map[string]string) {
 	userIdStr :=inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	If err != nil {
