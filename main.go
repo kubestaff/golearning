@@ -1,9 +1,9 @@
 package main
 
 import (
-	// "fmt"
-	// "net/http"
-	"github.com/kubestaff/golearning/home"
+	"fmt"
+	"net/http"
+
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
@@ -18,144 +18,144 @@ func main() {
 	// we close the server at the end
 	defer s.Stop()
 
-	s.Handle("/", home.HandleHome)
+	s.Handle("/", HandleIndex)
 	s.Handle("/me", user.HandleMe)
-	// s.HandleJSON("/colors", HandleJsonOutput)
-	// s.HandleJSON("/add-color", HandleJsonInputFromParams)
-	// s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
+	s.HandleJSON("/colors", HandleJsonOutput)
+	s.HandleJSON("/add-color", HandleJsonInputFromParams)
+	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
 	
 	s.Start()
 }
 
-// type Color struct {
-// 	Name string
-// 	Code string
-// }
+type Color struct {
+	Name string
+	Code string
+}
 
-// var colors = map[string]Color{
-// 	"red": {
-// 		Name: "red",
-// 		Code: "#FF0000",
-// 	},
-// 	"blue": {
-// 		Name: "blue",
-// 		Code: "#0000FF",
-// 	},
-// 	"white": {
-// 		Name: "white",
-// 		Code: "#ffffff",
-// 	},
-// 	"black": {
-// 		Name: "black",
-// 		Code: "#000000",
-// 	},
-// }
+var colors = map[string]Color{
+	"red": {
+		Name: "red",
+		Code: "#FF0000",
+	},
+	"blue": {
+		Name: "blue",
+		Code: "#0000FF",
+	},
+	"white": {
+		Name: "white",
+		Code: "#ffffff",
+	},
+	"black": {
+		Name: "black",
+		Code: "#000000",
+	},
+}
 
-// func HandleJsonInputFromBody(input server.Input) (o server.Output) {
-// 	colorFromInput := Color{}
+func HandleJsonInputFromBody(input server.Input) (o server.Output) {
+	colorFromInput := Color{}
 
-// 	err := input.Scan(&colorFromInput)
+	err := input.Scan(&colorFromInput)
 
-// 	if err != nil {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: err.Error(),
-// 				Code:  400,
-// 			},
-// 			Code: http.StatusBadRequest,
-// 		}
-// 	}
+	if err != nil {
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  400,
+			},
+			Code: http.StatusBadRequest,
+		}
+	}
 
-// 	if colorFromInput.Name == "" {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: "Empty color name",
-// 				Code:  400,
-// 			},
-// 			Code: http.StatusBadRequest,
-// 		}
-// 	}
+	if colorFromInput.Name == "" {
+		return server.Output{
+			Data: server.JsonError{
+				Error: "Empty color name",
+				Code:  400,
+			},
+			Code: http.StatusBadRequest,
+		}
+	}
 
-// 	if colorFromInput.Code == "" {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: "Empty color code",
-// 				Code:  400,
-// 			},
-// 			Code: http.StatusBadRequest,
-// 		}
-// 	}
+	if colorFromInput.Code == "" {
+		return server.Output{
+			Data: server.JsonError{
+				Error: "Empty color code",
+				Code:  400,
+			},
+			Code: http.StatusBadRequest,
+		}
+	}
 
-// 	colors[colorFromInput.Name] = colorFromInput
+	colors[colorFromInput.Name] = colorFromInput
 
-// 	return server.Output{
-// 		Data: colorFromInput,
-// 		Code: http.StatusOK,
-// 	}
-// }
+	return server.Output{
+		Data: colorFromInput,
+		Code: http.StatusOK,
+	}
+}
 
-// func HandleJsonInputFromParams(input server.Input) (o server.Output) {
-// 	colorNameFromInput := input.Get("name")
-// 	colorCodeFromInput := input.Get("code")
+func HandleJsonInputFromParams(input server.Input) (o server.Output) {
+	colorNameFromInput := input.Get("name")
+	colorCodeFromInput := input.Get("code")
 
-// 	if colorNameFromInput == "" {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: "Empty color name",
-// 				Code:  400,
-// 			},
-// 			Code: http.StatusBadRequest,
-// 		}
-// 	}
+	if colorNameFromInput == "" {
+		return server.Output{
+			Data: server.JsonError{
+				Error: "Empty color name",
+				Code:  400,
+			},
+			Code: http.StatusBadRequest,
+		}
+	}
 
-// 	if colorCodeFromInput == "" {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: "Empty color code",
-// 				Code:  400,
-// 			},
-// 			Code: http.StatusBadRequest,
-// 		}
-// 	}
-// 	color := Color{
-// 		Name: colorNameFromInput,
-// 		Code: colorCodeFromInput,
-// 	}
-// 	colors[colorNameFromInput] = color
+	if colorCodeFromInput == "" {
+		return server.Output{
+			Data: server.JsonError{
+				Error: "Empty color code",
+				Code:  400,
+			},
+			Code: http.StatusBadRequest,
+		}
+	}
+	color := Color{
+		Name: colorNameFromInput,
+		Code: colorCodeFromInput,
+	}
+	colors[colorNameFromInput] = color
 
-// 	return server.Output{
-// 		Data: color,
-// 		Code: http.StatusOK,
-// 	}
-// }
+	return server.Output{
+		Data: color,
+		Code: http.StatusOK,
+	}
+}
 
-// func HandleJsonOutput(input server.Input) (o server.Output) {
-// 	colorNameFromInput := input.Get("color")
-// 	if colorNameFromInput == "" {
-// 		return server.Output{
-// 			Data: colors,
-// 			Code: http.StatusOK,
-// 		}
-// 	}
+func HandleJsonOutput(input server.Input) (o server.Output) {
+	colorNameFromInput := input.Get("color")
+	if colorNameFromInput == "" {
+		return server.Output{
+			Data: colors,
+			Code: http.StatusOK,
+		}
+	}
 
-// 	color, ok := colors[colorNameFromInput]
-// 	if !ok {
-// 		return server.Output{
-// 			Data: server.JsonError{
-// 				Error: fmt.Sprintf("%s color not found", colorNameFromInput),
-// 				Code:  404,
-// 			},
-// 			Code: http.StatusNotFound,
-// 		}
-// 	}
+	color, ok := colors[colorNameFromInput]
+	if !ok {
+		return server.Output{
+			Data: server.JsonError{
+				Error: fmt.Sprintf("%s color not found", colorNameFromInput),
+				Code:  404,
+			},
+			Code: http.StatusNotFound,
+		}
+	}
 
-// 	return server.Output{
-// 		Data: color,
-// 		Code: http.StatusOK,
-// 	}
-// }
+	return server.Output{
+		Data: color,
+		Code: http.StatusOK,
+	}
+}
 
-// func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
-// 	variables := map[string]string{"%name%": "Max Mustermann"}
-// 	return "html/index.html", variables
-// }
+func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
+	variables := map[string]string{"%name%": "Max Mustermann"}
+	return "html/index.html", variables
+}
