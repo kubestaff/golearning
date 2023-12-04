@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 
 type User = {
@@ -11,41 +12,65 @@ type User = {
 
 const backendUrl = "http://localhost:34567/user";
 
-export default function User({ id, name, age, jobTitle }: User) {
-    return (<div key={id}>{name} [{age}] - {jobTitle}
-        <Button href={`/users-change/${id}`} size="sm" className="ms-1 mb-1" variant="outline-info">Edit</Button>
-    </div>
-    )
-}
+export default function User({ id, name }: User) {
+    const [showDetails, setShowDetails] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [userAge, setUserAge] = useState(0);
+    const [userJobTitle, setUserJobTitle] = useState("");
 
-
-export function Me(userid: string) {
-    const [user, setUser] = useState<any>();
-
-    const fetchUser = function (userid: string) {
-        const apiUrl = `${backendUrl}?id=${userid}`;
-
-        fetch(apiUrl)
+    const fetchUserData = () => {
+        fetch(backendUrl + id)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                setUser(data);
-
+                setUserName(data.Name);
+                setUserAge(data.Age);
+                setUserJobTitle(data.JobTitle);
             })
             .catch((error) => console.error(error));
     };
 
-    useEffect(() => fetchUser(userid), []);
-    return (
-        <div>
-            <User
-                id={user.ID}
-                name={user.Name}
-                age={user.Age}
-                jobTitle={user.jobTitle}
-            />
-        </div>
-    );
+    useEffect(() => {
+        fetchUserData();
+    }, [showDetails, id]);
 
+    const viewUser = () => {
+        setShowDetails(!showDetails);
+    };
+
+    return (
+        <div key={id}>
+            {name}
+            <Button
+                onClick={() => viewUser()}
+                size="sm"
+                className="ms-1 mb-1"
+                variant="outline-info"
+            >
+                {showDetails ? "Hide" : "View"}
+            </Button>
+            <Button
+                href={/users-change/${id}}
+            size="sm"
+            className="ms-1 mb-1"
+            variant="outline-info"
+        >
+            Edit
+        </Button>
+  
+        {showDetails && (
+            <Card className="position-absolute top-0 end-0 mt-2 me-5">
+                <Card.Body>
+                    <Card.Title>{userName}</Card.Title>
+                    <Card.Text>
+                        <strong>Age:</strong> {userAge} <br />
+                        <strong>Job Title:</strong> {userJobTitle}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        )
+    }
+      </div >
+    );
 }
