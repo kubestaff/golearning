@@ -19,7 +19,7 @@ func HandleHome(inputs server.Input) (filename string, placeholders map[string]s
 
 	listOfLinks := []string{}
 	for_, usr := range *users {
-		userLink := fmt.Sprint(`<a href="/me10?id=%d">%s</a>`, usr.Id, usr.Name)
+		userLink := fmt.Sprint(`<a href="/me10?id=%d">%s</a>`, usr.ID, usr.Name)
 		listOflistOfLinks =append(listOfLinks, userLink )
 	}
 

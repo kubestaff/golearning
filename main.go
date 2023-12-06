@@ -2,18 +2,23 @@ package main
 
 import (
 	"fmt"
-	
+	"log"
+
+	"github.com/kubestaff/golearning/db"
 	"github.com/kubestaff/golearning/home"
+	"github.com/kubestaff/golearning/setting"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
-
 func main() {
-    provider := user.Provider{}
-	err := provider.SaveUsers()
+	dbConn, err := db.CreateDataBase()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
+		
+	}
+	err = db.Migrate(dbConn)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	opts := server.Options{
@@ -30,6 +35,7 @@ func main() {
 	s.Handle("/setting", setting.HandleReadSetting)
 	
 	s.Start()
+
 }
 	
 

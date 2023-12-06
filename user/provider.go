@@ -1,6 +1,10 @@
 package user
 
-import "github.com/kubestaff/golearning/helper"
+import (
+
+
+	"github.com/kubestaff/golearning/helper"
+)
 
 type Provider struct{}
 
@@ -32,18 +36,18 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 		}
 
 		for _, user := range *usersPointer {
-			if user.Id == id {
+			if int(user.ID) == id {
 				return user, true, nil
 		}
 	}
 
 	return User{}, false, nil
 
-	func (p Provider) SaveUsers() error {
-		users = p.GetAll()
 	
 }
-
+func (p Provider) SaveUsers() error {
+	users = p.GetAll()
+{
 			Id:       10,
 			Name:     "Yoni Makanda",
 			Age:      37,
