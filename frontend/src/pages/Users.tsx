@@ -8,6 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
 import { error } from "console";
+import { convertTypeAcquisitionFromJson } from "typescript";
 const backendUrl = "http://localhost:34567/users?id=";
 const changeUserUrl = "http://127.0.0.1:34567/user-change?id=";
 
@@ -43,7 +44,7 @@ export function Change() {
   const [jobCol, setJobcol] = useState('');
   const [ageCol, setAgecol] = useState('');
   const [about, setAbout] = useState('');
-  const [isValid, setIsValid] = useState(true);
+
 
   const fetchUserData = function () {
     fetch(backendUrl + userId)
@@ -98,10 +99,11 @@ export function Change() {
       console.log(response.json())
     })
   };
+
   return (
     <>
-      <Alert variant={"danger"} onClose={() => setIsValid(false)} dismissible>
-        Some error happened
+      <Alert variant={"success"} dismissible>
+        Something happened!
       </Alert>
       <Alert variant={"success"} dismissible>
         User successfully saved
@@ -180,6 +182,7 @@ export function Create() {
   const [jobCol, setJobcol] = useState('');
   const [ageCol, setAgecol] = useState('');
   const [about, setAbout] = useState('');
+
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()

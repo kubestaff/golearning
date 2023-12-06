@@ -4,37 +4,37 @@ import Card from 'react-bootstrap/Card';
 
 
 type User = {
-    id: string,
-    name: string,
-    age: number,
-    jobTitle: string
+  id: string,
+  name: string,
+  age: number,
+  jobTitle: string
 }
 
 const backendUrl = "http://localhost:34567/users?id=";
 
 export default function User({ id, name, age, jobTitle }: User) {
-    const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
-    const fetchUserData = () => {
-        fetch(backendUrl + id)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
+  const fetchUserData = () => {
+    fetch(backendUrl + id)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
 
-            })
-            .catch((error) => console.error(error));
-    };
+      })
+      .catch((error) => console.error(error));
+  };
 
-    useEffect(() => {
-        fetchUserData();
-    }, [id]);
+  useEffect(() => {
+    fetchUserData();
+  }, [id]);
 
-    const viewUser = () => {
-        setShowDetails(!showDetails);
-    };
+  const viewUser = () => {
+    setShowDetails(!showDetails);
+  };
 
-    return (
+  return (
     <div key={id}>
       {name}
       <Button
