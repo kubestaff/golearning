@@ -46,6 +46,11 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 		"%name%": user.Name,
 		"%job-title%": user.JobTitle,
 		"%age%": strconv.Itoa(user.Age),
+		"%background-color%": user.BackgroundColor,
+		"%job-font-color%": user.JobFontColor,
+		"%age-font-color%": user.AgeFontColor,
+		"%about": user.About,
+		"%image%": user.Image,
 	}
 	
 	//output the user
