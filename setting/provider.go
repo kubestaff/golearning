@@ -36,8 +36,8 @@ func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, e
 
 	}
 
-	func (p Provider) SaveSetting(setting *UserSetting) error {
-		if newSetting.Id != 0 {
+	func (p Provider) SaveSetting(newSetting *UserSetting) error {
+		if newSetting.Id == 0 {
 			return p.insertSetting(setting)
 		}
 
@@ -48,14 +48,34 @@ func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, e
 
 	func (p Provider) updateSetting(setting *UserSetting) error {
 		//todo implement this method
-		return nil
+		existingSettings, err := p.GetAll()
+			if err != nil {
+					return err
+			}
+		index := 0
+		for , existingSettings := range existingSettings {
+				if existingSettings.Id == setting.Id {
+						index = i
+						break
+				}
+		}
+
+		if index == 0 {
+				return errors.New("setting not found")
+		}
+
+		if existingSettings[index].UserId  != setting.UserId {
+				existingSettings[index].UserId = setting.UserId
+		}
+	
+		return p.SaveSettings(&existingSettings)
 	}
 
 	func (p Provider) insertSetting(setting *UserSetting) error {
 		existingSettings, err := p.GetAll()
 		
-
-		if errors.Is(err, os.ErrNotExist) {
+		if !os.IsNotExist(err) {
+			setting.Id = len(existingSettings) + 1
 			settingToSave := []UserSetting{
 				*setting,
 			}
@@ -65,8 +85,9 @@ func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, e
 		if err != nil {
 			return err
 		}
+		setting.Id = len(existingSettings) + 1
 
 		existingSettings = append(existingSettings, *setting)
 
-		return p.SaveSettings(&settingToSave)
+		return p.SaveSettings(&existingSettings)
 	}
