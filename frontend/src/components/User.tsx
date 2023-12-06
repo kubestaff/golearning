@@ -12,11 +12,8 @@ type User = {
 
 const backendUrl = "http://localhost:34567/users?id=";
 
-export default function User({ id, name }: User) {
+export default function User({ id, name, age, jobTitle }: User) {
     const [showDetails, setShowDetails] = useState(false);
-    const [userName, setUserName] = useState("");
-    const [userAge, setUserAge] = useState(0);
-    const [userJobTitle, setUserJobTitle] = useState("");
 
     const fetchUserData = () => {
         fetch(backendUrl + id)
@@ -24,16 +21,14 @@ export default function User({ id, name }: User) {
                 return response.json();
             })
             .then((data) => {
-                setUserName(data.Name);
-                setUserAge(data.Age);
-                setUserJobTitle(data.JobTitle);
+
             })
             .catch((error) => console.error(error));
     };
 
     useEffect(() => {
         fetchUserData();
-    }, [showDetails, id]);
+    }, [id]);
 
     const viewUser = () => {
         setShowDetails(!showDetails);
@@ -62,10 +57,10 @@ export default function User({ id, name }: User) {
       {showDetails && (
         <Card className="position-absolute top-0 end-0 mt-2 me-5">
           <Card.Body>
-            <Card.Title>{userName}</Card.Title>
+            <Card.Title>{name}</Card.Title>
             <Card.Text>
-              <strong>Age:</strong> {userAge} <br />
-              <strong>Job Title:</strong> {userJobTitle}
+              <strong>Age:</strong> {age} <br />
+              <strong>Job Title:</strong> {jobTitle}
             </Card.Text>
           </Card.Body>
         </Card>
