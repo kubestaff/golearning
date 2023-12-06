@@ -11,7 +11,7 @@ import (
 func HandleMe10(inputs server.Input) (filename string, placeholders map[string]string) {
 	userIdStr :=inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
-	If err != nil {
+	if err != nil {
 		return helper.HandleErrorText("Invalid user id")
 	}
 
@@ -19,7 +19,7 @@ func HandleMe10(inputs server.Input) (filename string, placeholders map[string]s
 	usersProvider := Provider{}
 	//todo handle error
 	user, isFound,_ := usersProvider.GetUserById(userIdInt)
-	If !isFound {
+	if !isFound {
 		return helper.HandleErrorText("Not found")
 	}
 

@@ -1,6 +1,6 @@
 package helper
 
-func HandleError(errText string) (flename string, placeholders map[string]string) {
+func HandleErrorText(errText string) (flename string, placeholders map[string]string) {
 	output := map[string]string{
 		"%error%": 	errText,	
 	}
@@ -9,5 +9,5 @@ func HandleError(errText string) (flename string, placeholders map[string]string
 }
 
 func HandleErr(err error) (flename string, placeholders map[string]string) {
-	return HandleError(err.Error())
+	return HandleErrorText(err.Error())
 }

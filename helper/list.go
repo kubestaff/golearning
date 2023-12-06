@@ -5,15 +5,14 @@ import (
 	"strings"
 )
 
-func FormatStringsToTags(inputStrings []string, tag string) string {
-
-	formattedInput := []string{}
-	for_, inputString := range inputinputStrings {
-		formattedInputStrings := fmt.Sprintf("<%s>%s</%s>" tag, inputString, tag)
-		formattedInput = append(formattedInputs, formattedInputString )
+func WrapStringsToTags(inputStrings []string, tag string) string {
+	taggedInput := []string{}
+	for _, inputString := range inputStrings {
+		taggedInputString := fmt.Sprintf("<%s> %s </%s>", tag, inputString, tag)
+		taggedInput = append(taggedInput, taggedInputString)
 	}
-	joinedCharacteristics := strings.Join(formattedInputs, "")
+	taggedInputsFlat := strings.Join(taggedInput, "")
 
-	return joinedCharacteristics
+	return taggedInputsFlat
 
 }
