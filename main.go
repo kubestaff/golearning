@@ -3,11 +3,12 @@ package main
 import (
 	"strconv"
 
-	"github.com/kubestaff/web-helper/server"
+	"github.com/kubestaff/golearning/helpers"
 	"github.com/kubestaff/golearning/user"
+	"github.com/kubestaff/web-helper/server"
 )
 
-func main() { 
+func main() {
 	opts := server.Options{
 		Port: 34567,
 	}
@@ -20,7 +21,6 @@ func main() {
 	s.Handle("/", HandleIndex)
 	s.Handle("/me", HandleMe)
 
-
 	s.Start()
 }
 
@@ -29,11 +29,11 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 	userIdStr := inputs.Values.Get("id")
 	//convert id from string to int
 	userIdInt, err := strconv.Atoi(userIdStr)
-	if err != nil{
+	if err != nil {
 		//todo
 		return "", nil
 	}
-	
+
 	//get user from id
 	usersProvider := user.Provider{}
 	user, isFound := usersProvider.GetUserById(userIdInt)
@@ -42,17 +42,24 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 		return "", nil
 	}
 
+	characteristicsStr := helpers.WrapStringsToTags(user.Characteristics, "li")
+	likesStr := helpers.WrapStringsToTags(user.Likes, "li")
+	dislikesStr := helpers.WrapStringsToTags(user.Dislikes, "li")
+
 	output := map[string]string{
-		"%name%": user.Name,
-		"%job-title%": user.JobTitle,
-		"%age%": strconv.Itoa(user.Age),
+		"%name%":            user.Name,
+		"%job-title%":       user.JobTitle,
+		"%image%":           user.Image,
+		"%age%":             strconv.Itoa(user.Age),
+		"%characteristics%": characteristicsStr,
+		"%likes%":           likesStr,
+		"%dislikes%":        dislikesStr,
 		"%background-color%": user.BackgroundColor,
 		"%job-font-color%": user.JobFontColor,
 		"%age-font-color%": user.AgeFontColor,
 		"%about": user.About,
-		"%image%": user.Image,
 	}
-	
+
 	//output the user
 
 	return "html/me.html", output
