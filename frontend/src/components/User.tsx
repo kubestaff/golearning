@@ -8,37 +8,33 @@ type User = {
   name: string,
   age: number,
   jobTitle: string
+  showDetails: boolean
+  setShowDetails: any
 }
 
 const backendUrl = "http://localhost:34567/users?id=";
 
-export default function User({ id, name, age, jobTitle }: User) {
-  const [showDetails, setShowDetails] = useState(false);
+export default function User({ id, name, age, jobTitle, showDetails, setShowDetails }: User) {
+  // const fetchUserData = () => {
+  //   fetch(backendUrl + id)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
 
-  const fetchUserData = () => {
-    fetch(backendUrl + id)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+  //     })
+  //     .catch((error) => console.error(error));
+  // };
 
-      })
-      .catch((error) => console.error(error));
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, [id]);
-
-  const viewUser = () => {
-    setShowDetails(!showDetails);
-  };
+  // useEffect(() => {
+  //   fetchUserData();
+  // }, [id]);
 
   return (
     <div key={id}>
       {name}
       <Button
-        onClick={() => viewUser()}
+        onClick={() => setShowDetails(id)}
         size="sm"
         className="ms-1 mb-1"
         variant="outline-info"
