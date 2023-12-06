@@ -1,15 +1,15 @@
 package db
 
 import (
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
 
-const DataBaseName = "golearning.db"
+const DatabaseName ="golearning.db"
 
 func CreateDatabase() (dbConnection *gorm.DB, err error) {
-	dbConnection, err = gorm.Open(sqlite.Open(DataBaseName), &gorm.Config{})
+	dbConnection, err = gorm.Open(sqlite.Open(DatabaseName), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
