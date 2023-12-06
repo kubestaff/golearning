@@ -28,7 +28,7 @@ export default function Users() {
       {users.length > 0 && (
         <>
           {users.map(user => (
-            <User id={user.ID} name={user.Name} age={user.Age} jobTitle={user.JobTitle}/>
+            <div> <User id={user.ID} name={user.Name} age={user.Age} jobTitle={user.JobTitle}/> </div>
           ))}
          </>
       )}

@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Provider struct{
+type Provider struct {
 	DbConnection *gorm.DB
 }
 
@@ -25,7 +25,7 @@ func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, e
 	s = UserSetting{}
 
 	result := p.DbConnection.First(&s, "user_id = ?", userId)
-	
+
 	err = result.Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return s, false, nil
@@ -40,7 +40,7 @@ func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, e
 
 func (p Provider) SaveSetting(newSetting *UserSetting) error {
 	result := p.DbConnection.Save(newSetting)
-	
+
 	err := result.Error
 	if err != nil {
 		return err
@@ -50,6 +50,9 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 }
 
 func (p Provider) DeleteSetting(newSetting *UserSetting) error { //Delete
+	if newSetting.ID <= 0 {
+		return errors.New("setting id not found")
+	}
 	result := p.DbConnection.Delete(newSetting, newSetting.ID)
 	
 	err := result.Error
