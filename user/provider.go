@@ -31,7 +31,7 @@ func (p Provider) GetAll() []User {
 			Name: "Farah",
 			Age: 25,
 			JobTitle: "Aspiring software engineer",
-			Image: "farah.jpeg",
+			Image: "pexels-photo-992734.jpeg",
 			Characteristics: []string{
 				"brown hair",
 				"brown eyes",
