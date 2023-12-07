@@ -121,6 +121,15 @@ func (h Handler) HandleChangeUser(serverInput server.Input) (output server.Outpu
 		DbConnection: h.DbConnection,
 	}
 
+	if userFromInput.Age < 0 || userFromInput.Age > 100 {
+		return server.Output{
+			Data: server.JsonError{
+				Error: fmt.Sprintf("Invalid age value %d", userFromInput.Age),
+				Code:  400,
+			},
+			Code: 400,
+		}
+	}
 	if userIdInt > 0 {
 		userFromInput.ID = uint(userIdInt)
 		userFromDB, isFound, err := userProvider.GetUserById(userIdInt)

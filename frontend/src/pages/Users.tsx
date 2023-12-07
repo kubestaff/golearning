@@ -7,8 +7,6 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
-import { error } from "console";
-import { convertTypeAcquisitionFromJson } from "typescript";
 const backendUrl = "http://localhost:34567/users?id=";
 const changeUserUrl = "http://127.0.0.1:34567/user-change?id=";
 
@@ -32,6 +30,7 @@ export default function Users() {
 
 export function Change() {
   let { userId } = useParams();
+  const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
   const [age, setAge] = useState(0);
   const [jobTitle, setJobTitle] = useState('');
@@ -44,7 +43,7 @@ export function Change() {
   const [jobCol, setJobcol] = useState('');
   const [ageCol, setAgecol] = useState('');
   const [about, setAbout] = useState('');
-
+  const [errorText, setErrorText] = useState('')
 
   const fetchUserData = function () {
     fetch(backendUrl + userId)
@@ -52,6 +51,11 @@ export function Change() {
         return response.json()
       })
       .then(data => {
+        if (data.Error) {
+          setErrorText(data.Error)
+          return
+        }
+
         setFirstName(data.Name)
         setAge(data.Age)
         setJobTitle(data.JobTitle)
@@ -65,7 +69,9 @@ export function Change() {
         setAgecol(data.ageCol)
         setAbout(data.about)
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        setErrorText(error.message)
+      });
   }
 
   useEffect(() => {
@@ -96,18 +102,29 @@ export function Change() {
       },
       body: JSON.stringify(data),
     }).then(response => {
-      console.log(response.json())
-    })
+        return response.json()
+      }).then(data => {
+        if (data.Error) {
+          setErrorText(data.Error)
+          return
+        }
+        if (data.Message) {
+          setSuccessText(data.Message)
+        }
+      })
+      .catch(error => {
+        setErrorText(error.message)
+      })
   };
 
   return (
     <>
-      <Alert variant={"success"} dismissible>
-        Something happened!
-      </Alert>
-      <Alert variant={"success"} dismissible>
-        User successfully saved
-      </Alert>
+      {errorText !== '' && (<Alert variant={"danger"} dismissible>
+        {errorText}
+      </Alert>)}
+      {successText !== '' && (<Alert variant={"success"} dismissible>
+        {successText}
+      </Alert>)}
       <h2>Change User </h2>
       <Form className="bg-gray p-3" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="name">
@@ -167,15 +184,15 @@ export function Change() {
 };
 
 
-
-
 export function Create() {
+  const [errorText, setErrorText] = useState('')
+  const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
   const [age, setAge] = useState(0);
   const [jobTitle, setJobTitle] = useState('');
-  const [characteristics, setCharacteristics] = useState('');
-  const [likes, setLikes] = useState('');
-  const [dislikes, setDislikes] = useState('');
+  const [characteristics, setCharacteristics] = useState<string[]>([]);
+  //const [likes, setLikes] = useState('');
+  //const [dislikes, setDislikes] = useState('');
   const [image, setImage] = useState('');
   const [backgroundCol, setBackground] = useState('');
   const [nameCol, setNamecol] = useState('');
@@ -191,8 +208,8 @@ export function Create() {
       Name: firstName,
       JobTitle: jobTitle,
       Characteristics: characteristics,
-      Likes: likes,
-      Dislikes: dislikes,
+      //Likes: likes,
+      //Dislikes: dislikes,
       Image: image,
       Backgroundcol: backgroundCol,
       Namecol: nameCol,
@@ -208,13 +225,35 @@ export function Create() {
       },
       body: JSON.stringify(data),
     }).then(response => {
-      console.log(response.json())
+      return response.json()
+    }).then(data => {
+      if (data.Error) {
+        setErrorText(data.Error)
+        return
+      }
+      if (data.Message && data.Message) {
+        setSuccessText(data.Message)
+      }
     })
+    .catch(error => {
+      setErrorText(error.message)
+    });
   };
+
+  const setCharacteristicsFromFlatValue = (characteristics: string) => {
+    const characteristicsArray = characteristics.split(",")
+    setCharacteristics(characteristicsArray)
+  }
 
   return (
     <>
+      {errorText !== '' && (<Alert variant={"danger"} dismissible>
+        {errorText}
+      </Alert>)}
 
+      {successText !== '' && (<Alert variant={"success"} dismissible>
+        {successText}
+      </Alert>)}
       <h2>Create User</h2>
       <Form className="bg-gray p-3" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="name">
@@ -231,16 +270,16 @@ export function Create() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="characteristics">
           <Form.Label >Characteristics</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" onChange={e => setCharacteristics(e.target.value)} />
+          <Form.Control size="sm" type="text" as="textarea" onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="likes">
+        {/* <Form.Group className="mb-3" controlId="likes">
           <Form.Label >Likes</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" onChange={e => setLikes(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="dislikes">
           <Form.Label >Dislikes</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" onChange={e => setDislikes(e.target.value)} />
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
           <Form.Control type="file" onChange={e => setImage(e.target.value)} />
