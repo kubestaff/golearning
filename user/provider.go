@@ -25,16 +25,18 @@ func (p Provider) GetAll() []User {
 				"Rudeness",
 				"Celery",
 			},
+			BackgroundColor: "#ccccff",
 		},
 		{
 			Id: 2,
 			Name: "Farah",
-			Age: 25,
+			Age: 26,
 			JobTitle: "Aspiring software engineer",
-			Image: "pexels-photo-992734.jpeg",
+			Image: "farah2.jpeg",
+			About: "Creative marketeer looking to transition into tech and take up a new challenge.",
 			Characteristics: []string{
-				"brown hair",
-				"brown eyes",
+				"Brown hair",
+				"Brown eyes",
 				"5ft 5 height",
 			},
 			Likes: []string{
@@ -45,8 +47,9 @@ func (p Provider) GetAll() []User {
 			},
 			Dislikes: []string{
 				"Waking up early",
-				"brocolli",
+				"Brocolli",
 			},
+			BackgroundColor: "#99ccff",
 		},
 	}
 }
