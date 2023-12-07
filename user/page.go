@@ -15,7 +15,10 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 	}
 
 	userProvider := Provider{}
-	user, isFound := userProvider.GetUserById(userIdInt)
+	user, isFound, err := userProvider.GetUserById(userIdInt)
+	if err != nil {
+		return helpers.HandleErr(err)
+	}
 	if !isFound {
 		return helpers.HandleErrorText("User not found")
 	}

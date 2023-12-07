@@ -1,0 +1,122 @@
+[
+    {
+        "Id": 1,
+        "Name": "Oreva",
+        "Age": 88,
+        "JobTitle": "programmer",
+        "Image": "headshot.jpeg",
+        "Characteristics": [
+            "black hair",
+            "brown eyes"
+        ],
+        "Likes": [
+            "Poetry",
+            "football"
+        ],
+        "Dislikes": [
+            "dishonesty",
+            "slime"
+        ],
+        "BackgroundColor": "#271F30",
+        "NameFontColor": "#0000",
+        "JobFontColor": "#777",
+        "AgeFontColor": "#6C5A49",
+        "About": "i love liverpool football club"
+    },
+    {
+        "Id": 2,
+        "Name": "Ansel",
+        "Age": 78,
+        "JobTitle": "Software dev",
+        "Image": "siren.png",
+        "Characteristics": [
+            "white hair",
+            "black eyes"
+        ],
+        "Likes": [
+            "skiing",
+            "football"
+        ],
+        "Dislikes": [
+            "lies",
+            "slime"
+        ],
+        "BackgroundColor": "#f6e3d4",
+        "NameFontColor": "#110B06",
+        "JobFontColor": "#777",
+        "AgeFontColor": "#F87F0E",
+        "About": "i love to skate"
+    },
+    {
+        "Id": 3,
+        "Name": "Charles Leclerc",
+        "Age": 20,
+        "JobTitle": "F1 Ferarri Racer",
+        "Image": "cl16.png",
+        "Characteristics": [
+            "brown hair",
+            "green eyes"
+        ],
+        "Likes": [
+            "F1",
+            "Yachts"
+        ],
+        "Dislikes": [
+            "Bad team strategist",
+            "Losing"
+        ],
+        "BackgroundColor": "#E598A7",
+        "NameFontColor": "#070300",
+        "JobFontColor": "#8A2337",
+        "AgeFontColor": "#DAD0B1",
+        "About": "I love F1"
+    },
+    {
+        "Id": 4,
+        "Name": "Brittany Wilson",
+        "Age": 24,
+        "JobTitle": "Tycoon daughter",
+        "Image": "Wilson Sisters.png",
+        "Characteristics": [
+            "blonde hair",
+            "blue eyes"
+        ],
+        "Likes": [
+            "Shopping",
+            "Latrell Spencer"
+        ],
+        "Dislikes": [
+            "Heather and Megan Vandergeld",
+            "When baby poops"
+        ],
+        "BackgroundColor": "#6C3BC4",
+        "NameFontColor": "D0FCB3",
+        "JobFontColor": "#EBE4F7",
+        "AgeFontColor": "#609040",
+        "About": "I like shopping with Tiffany."
+    },
+    {
+        "Id": 5,
+        "Name": "Daniel Ricciardo",
+        "Age": 34,
+        "JobTitle": "F1 Alpha Tauri driver",
+        "Image": "DR3.png",
+        "Characteristics": [
+            "brown hair",
+            "brown eyes"
+        ],
+        "Likes": [
+            "Swimming",
+            "Golf"
+        ],
+        "Dislikes": [
+            "Bad drivers",
+            "mushrooms"
+        ],
+        "BackgroundColor": "#CF7F9A",
+        "NameFontColor": "#58D505",
+        "JobFontColor": "#B0709A",
+        "AgeFontColor": "#9BC59D",
+        "About": "I love to hike"
+    }
+]
