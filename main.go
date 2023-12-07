@@ -54,6 +54,7 @@ func HandleMe(inputs server.Input) (filename string, placeholders map[string]str
 		"%characteristics%": characteristicsStr,
 		"%likes%":           likesStr,
 		"%dislikes%":        dislikesStr,
+		"%backgroundColor%": user.BackgroundColor,
 	}
 
 	//output the user

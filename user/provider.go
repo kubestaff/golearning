@@ -25,6 +25,7 @@ func (p Provider) GetAll() []User {
 				"Rudeness",
 				"Celery",
 			},
+			BackgroundColor: "#820D04",
 		},
 		{
 			Id: 2,
@@ -47,6 +48,7 @@ func (p Provider) GetAll() []User {
 				"Waking up early",
 				"brocolli",
 			},
+			BackgroundColor: "#04825E",
 		},
 	}
 }
