@@ -1,9 +1,35 @@
 package user
 
+import "github.com/kubestaff/golearning/helpers"
+
 type Provider struct{}
 
-func (p Provider) GetAll() []User {
-	return []User{
+const fileName = "data/userData.json"
+
+func (p Provider) GetAll() ([]User, error) {
+	var users []User
+	err := helpers.ReadFromJSONFile(fileName, &users)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
+	users, err := p.GetAll()
+	if err != nil {
+		return User{}, false, err
+	}
+	for _, user := range users{
+		if user.Id == id {
+			return user, true, nil
+		}
+	}
+	return User{}, false, nil
+}
+
+func (p Provider) SaveUsers() error {
+	users := []User{
 		{
 			Id: 1,
 			Name: "Funto Awoyelu",
@@ -51,14 +77,5 @@ func (p Provider) GetAll() []User {
 			BackgroundColor: "#04825E",
 		},
 	}
-}
-
-func (p Provider) GetUserById(id int) (usr User, isFound bool) {
-	users := p.GetAll()
-	for _, user := range users{
-		if user.Id == id {
-			return user, true
-		}
-	}
-	return User{}, false
+	return helpers.SaveJSONFile(fileName, users)
 }

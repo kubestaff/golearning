@@ -11,7 +11,10 @@ import (
 func HandleIndex(inputs server.Input) (filename string, placeholders map[string]string) {
 	provider := user.Provider{}
 
-	users := provider.GetAll()
+	users, err := provider.GetAll()
+	if err != nil {
+		return "html/error.html", nil
+	}
 
 	listOfLinks := []string{}
 

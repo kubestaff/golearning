@@ -1,0 +1,54 @@
+[
+    {
+        "Id": 1,
+        "Name": "Funto Awoyelu",
+        "Age": 26,
+        "JobTitle": "Programme Manager",
+        "Image": "funto.png",
+        "Characteristics": [
+            "Dark brown hair",
+            "Dark brown eyes",
+            "5ft 3 height"
+        ],
+        "Likes": [
+            "Shopping",
+            "Good food",
+            "Exploring in nature",
+            "Meeting new people"
+        ],
+        "Dislikes": [
+            "Rudeness",
+            "Celery"
+        ],
+        "BackgroundColor": "#820D04",
+        "JobFontColor": "",
+        "AgeFontColor": "",
+        "About": ""
+    },
+    {
+        "Id": 2,
+        "Name": "Farah",
+        "Age": 25,
+        "JobTitle": "Aspiring software engineer",
+        "Image": "farah.jpeg",
+        "Characteristics": [
+            "brown hair",
+            "brown eyes",
+            "5ft 5 height"
+        ],
+        "Likes": [
+            "Horse riding",
+            "Reading",
+            "Dancing",
+            "Socializing"
+        ],
+        "Dislikes": [
+            "Waking up early",
+            "brocolli"
+        ],
+        "BackgroundColor": "#04825E",
+        "JobFontColor": "",
+        "AgeFontColor": "",
+        "About": ""
+    }
+]
