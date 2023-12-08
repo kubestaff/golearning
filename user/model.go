@@ -8,9 +8,9 @@ type User struct {
 	Age             int
 	JobTitle        string
 	Image           string
-	Characteristics []string `gorm:"-"`
-	Likes           []string `gorm:"-"`
-	Dislikes        []string `gorm:"-"`
+	Characteristics []string `gorm:"type:text"`
+	Likes           []string `gorm:"type:text"`
+	Dislikes        []string `gorm:"type:text"`
 	BackgroundColor string
 	NameFontColor   string
 	JobFontColor    string
