@@ -8,7 +8,6 @@ import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
 const backendUrl = "http://localhost:34567/users?id=";
-const changeUserUrl = "http://127.0.0.1:34567/user-change?id=";
 
 export default function Users() {
   return (
@@ -29,14 +28,17 @@ export default function Users() {
 }
 
 export function Change() {
+  const [selectedFile, setSelectedFile] = useState<File>();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
   let { userId } = useParams();
   const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
   const [age, setAge] = useState(0);
   const [jobTitle, setJobTitle] = useState('');
-  const [characteristics, setCharacteristics] = useState('');
-  const [likes, setLikes] = useState('');
-  const [dislikes, setDislikes] = useState('');
+  const [characteristics, setCharacteristics] = useState<string[]>([]);
+  const [likes, setLikes] = useState<string[]>([]);
+  const [dislikes, setDislikes] = useState<string[]>([]);
   const [image, setImage] = useState('');
   const [backgroundCol, setBackground] = useState('');
   const [nameCol, setNamecol] = useState('');
@@ -95,27 +97,50 @@ export function Change() {
       About: about,
     }
 
-    fetch(changeUserUrl + userId, {
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('File', selectedFile);
+    }
+
+    fetch(backendUrl + userId, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }).then(response => {
-        return response.json()
-      }).then(data => {
-        if (data.Error) {
-          setErrorText(data.Error)
-          return
-        }
-        if (data.Message) {
-          setSuccessText(data.Message)
-        }
-      })
+      return response.json()
+    }).then(data => {
+      if (data.Error) {
+        setErrorText(data.Error)
+        return
+      }
+      if (data.Message) {
+        setSuccessText(data.Message)
+      }
+    })
       .catch(error => {
         setErrorText(error.message)
       })
   };
+
+  const changeHandler = (event: any) => {
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
+
+  const setCharacteristicsFromFlatValue = (characteristics: string) => {
+    const characteristicsArray = characteristics.split(",")
+    setCharacteristics(characteristicsArray)
+  }
+  const setLikesFromFlatValue = (likes: string) => {
+    const likesArray = likes.split(",")
+    setLikes(likesArray)
+  }
+  const setDislikesFromFlatValue = (dislikes: string) => {
+    const dislikesArray = dislikes.split(",")
+    setDislikes(dislikesArray)
+  }
 
   return (
     <>
@@ -141,19 +166,26 @@ export function Change() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="characteristics">
           <Form.Label >Characteristics</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={characteristics} onChange={e => setCharacteristics(e.target.value)} />
+          <Form.Control size="sm" type="text" as="textarea" value={characteristics} onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="likes">
           <Form.Label >Likes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={likes} onChange={e => setLikes(e.target.value)} />
+          <Form.Control size="sm" type="text" as="textarea" value={likes} onChange={e => setLikesFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="dislikes">
           <Form.Label >Dislikes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={dislikes} onChange={e => setDislikes(e.target.value)} />
+          <Form.Control size="sm" type="text" as="textarea" value={dislikes} onChange={e => setDislikesFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" value={image} onChange={e => setImage(e.target.value)} />
+          <Form.Control type="file" value={image} onChange={changeHandler} />
+          {isFilePicked && selectedFile && (
+              <div>
+                <p>Filename: {selectedFile.name}</p>
+                <p>Filetype: {selectedFile.type}</p>
+                <p>Size in bytes: {selectedFile.size}</p>
+              </div>
+         )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">
           <Form.Label htmlFor="exampleColorInput">Choose your Background color</Form.Label>
@@ -185,14 +217,17 @@ export function Change() {
 
 
 export function Create() {
+  const [selectedFile, setSelectedFile] = useState<File>();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
   const [errorText, setErrorText] = useState('')
   const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
   const [age, setAge] = useState(0);
   const [jobTitle, setJobTitle] = useState('');
   const [characteristics, setCharacteristics] = useState<string[]>([]);
-  //const [likes, setLikes] = useState('');
-  //const [dislikes, setDislikes] = useState('');
+  const [likes, setLikes] = useState<string[]>([]);;
+  const [dislikes, setDislikes] = useState<string[]>([]);;
   const [image, setImage] = useState('');
   const [backgroundCol, setBackground] = useState('');
   const [nameCol, setNamecol] = useState('');
@@ -208,8 +243,8 @@ export function Create() {
       Name: firstName,
       JobTitle: jobTitle,
       Characteristics: characteristics,
-      //Likes: likes,
-      //Dislikes: dislikes,
+      Likes: likes,
+      Dislikes: dislikes,
       Image: image,
       Backgroundcol: backgroundCol,
       Namecol: nameCol,
@@ -218,7 +253,7 @@ export function Create() {
       About: about,
     }
 
-    fetch(changeUserUrl, {
+    fetch(backendUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -235,15 +270,28 @@ export function Create() {
         setSuccessText(data.Message)
       }
     })
-    .catch(error => {
-      setErrorText(error.message)
-    });
+      .catch(error => {
+        setErrorText(error.message)
+      });
   };
 
   const setCharacteristicsFromFlatValue = (characteristics: string) => {
     const characteristicsArray = characteristics.split(",")
     setCharacteristics(characteristicsArray)
   }
+  const setLikesFromFlatValue = (likes: string) => {
+    const likesArray = likes.split(",")
+    setLikes(likesArray)
+  }
+  const setDislikesFromFlatValue = (dislikes: string) => {
+    const dislikesArray = dislikes.split(",")
+    setDislikes(dislikesArray)
+  }
+
+  const changeHandler = (event: any) => {
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
 
   return (
     <>
@@ -272,17 +320,24 @@ export function Create() {
           <Form.Label >Characteristics</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
         </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="likes">
+        <Form.Group className="mb-3" controlId="likes">
           <Form.Label >Likes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" onChange={e => setLikes(e.target.value)} />
+          <Form.Control size="sm" type="text" as="textarea" onChange={e => setLikesFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="dislikes">
           <Form.Label >Dislikes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" onChange={e => setDislikes(e.target.value)} />
-        </Form.Group> */}
+          <Form.Control size="sm" type="text" as="textarea" onChange={e => setDislikesFromFlatValue(e.target.value)} />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" onChange={e => setImage(e.target.value)} />
+          <Form.Control type="file" onChange={changeHandler} />
+          {isFilePicked && selectedFile && (
+              <div>
+                <p>Filename: {selectedFile.name}</p>
+                <p>Filetype: {selectedFile.type}</p>
+                <p>Size in bytes: {selectedFile.size}</p>
+              </div>
+         )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">
           <Form.Label htmlFor="exampleColorInput">Choose your Background color</Form.Label>

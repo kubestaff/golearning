@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/kubestaff/golearning/helper"
 	"github.com/kubestaff/web-helper/server"
 	"gorm.io/gorm"
@@ -18,17 +19,15 @@ type Handler struct {
 	DbConnection *gorm.DB
 }
 
-func (h Handler) HandleUser(inputs server.Input) server.Output {
-	userIdStr := inputs.Values.Get("id")
+func (h Handler) HandleUser(c *gin.Context) {
+	userIdStr := c.Query("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: fmt.Sprintf("Invalid number %s provided", userIdStr),
-				Code:  400,
-			},
-			Code: 400,
-		}
+		c.JSON(400, server.JsonError{
+			Error: fmt.Sprintf("Invalid number %s provided", userIdStr),
+			Code:  400,
+		})
+		return
 	}
 
 	usersProvider := Provider{
@@ -36,35 +35,29 @@ func (h Handler) HandleUser(inputs server.Input) server.Output {
 	}
 	user, isFound, err := usersProvider.GetUserById(userIdInt)
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  500,
-			},
-			Code: 500,
-		}
+		c.JSON(500, server.JsonError{
+			Error: err.Error(),
+			Code:  500,
+		})
+		return
 	}
 
 	if !isFound {
-		return server.Output{
-			Data: server.JsonError{
-				Error: "User not found",
-				Code:  404,
-			},
-			Code: 404,
-		}
+		c.JSON(404, server.JsonError{
+			Error: "User not found",
+			Code:  404,
+		})
+		return
 	}
 
-	return server.Output{
-		Data: user,
-		Code: 200,
-	}
+	c.JSON(200, user)
 }
 
-func (h Handler) HandleUsers(inputs server.Input) (o server.Output) {
-	userIdStr := inputs.Values.Get("id")
+func (h Handler) HandleUsers(c *gin.Context) {
+	userIdStr := c.Query("id")
 	if userIdStr != "" {
-		return h.HandleUser(inputs)
+		h.HandleUser(c)
+		return
 	}
 
 	provider := Provider{
@@ -73,48 +66,39 @@ func (h Handler) HandleUsers(inputs server.Input) (o server.Output) {
 
 	users, err := provider.GetAll()
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  500,
-			},
-			Code: 500,
-		}
+		c.JSON(500, server.JsonError{
+			Error: err.Error(),
+			Code:  500,
+		})
+		return
 	}
-	return server.Output{
-		Data: users,
-		Code: 200,
-	}
+	c.JSON(200, users)
 }
 
-func (h Handler) HandleChangeUser(serverInput server.Input) (output server.Output) {
-	userIdStr := serverInput.Values.Get("id")
+func (h Handler) HandleChangeUser(c *gin.Context) {
+	userIdStr := c.Query("id")
 
 	userIdInt := 0
 	var err error
 	if userIdStr != "" {
 		userIdInt, err = strconv.Atoi(userIdStr)
 		if err != nil {
-			return server.Output{
-				Data: server.JsonError{
-					Error: err.Error(),
-					Code:  400,
-				},
-				Code: 400,
-			}
+			c.JSON(400, server.JsonError{
+				Error: err.Error(),
+				Code:  400,
+			})
+			return
 		}
 	}
 
 	userFromInput := User{}
-	err = serverInput.Scan(&userFromInput)
-	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  400,
-			},
-			Code: 400,
-		}
+	if err := c.ShouldBindJSON(&userFromInput); err != nil {
+		c.JSON(400, server.JsonError{
+			Error: err.Error(),
+			Code:  400,
+		},
+		)
+		return
 	}
 
 	userProvider := Provider{
@@ -122,59 +106,53 @@ func (h Handler) HandleChangeUser(serverInput server.Input) (output server.Outpu
 	}
 
 	if userFromInput.Age < 0 || userFromInput.Age > 100 {
-		return server.Output{
-			Data: server.JsonError{
-				Error: fmt.Sprintf("Invalid age value %d", userFromInput.Age),
-				Code:  400,
-			},
-			Code: 400,
-		}
+		c.JSON(400, server.JsonError{
+			Error: fmt.Sprintf("Invalid age value %d", userFromInput.Age),
+			Code:  400,
+		})
+		return
 	}
+
 	if userIdInt > 0 {
 		userFromInput.ID = uint(userIdInt)
 		userFromDB, isFound, err := userProvider.GetUserById(userIdInt)
 		if err != nil {
-			return server.Output{
-				Data: server.JsonError{
-					Error: err.Error(),
-					Code:  500,
-				},
-				Code: 500,
-			}
+			c.JSON(500, server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			})
+			return
 		}
+
 		if !isFound {
-			return server.Output{
-				Data: server.JsonError{
-					Error: "User id is not found",
-					Code:  404,
-				},
-				Code: 404,
-			}
+			c.JSON(404, server.JsonError{
+				Error: "User id is not found",
+				Code:  404,
+			})
+			return
 		}
 
 		if userFromInput.Name == "" {
-		   userFromInput.Name = userFromDB.Name
-		} 
+			userFromInput.Name = userFromDB.Name
+		}
 		if userFromInput.About == "" {
 			userFromInput.About = userFromDB.About
-		 } 
-		 if userFromInput.Age == 0 {
+		}
+		if userFromInput.Age == 0 {
 			userFromInput.Age = userFromDB.Age
-		 }
-		 if userFromInput.JobTitle == "" {
+		}
+		if userFromInput.JobTitle == "" {
 			userFromInput.JobTitle = userFromDB.JobTitle
-		 }
+		}
 	}
 
 	err = userProvider.SaveUser(&userFromInput)
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  500,
-			},
-			Code: 500,
-		}
+		c.JSON(500, server.JsonError{
+			Error: err.Error(),
+			Code:  500,
+		})
+		return
 	}
 
 	responseCode := 200
@@ -184,29 +162,24 @@ func (h Handler) HandleChangeUser(serverInput server.Input) (output server.Outpu
 		message = "Successfully created user"
 	}
 
-	return server.Output{
-		Data: helper.Success{
-			Message: message,
-		},
-		Code: responseCode,
-	}
+	c.JSON(responseCode, helper.Success{
+		Message: message,
+	})
 }
 
-func (h Handler) HandleDeleteUser(inputs server.Input) (output server.Output) {
-	userIdStr := inputs.Values.Get("id")
+func (h Handler) HandleDeleteUser(c *gin.Context) {
+	userIdStr := c.Query("id")
 
 	userIdInt := 0
 	var err error
 	if userIdStr != "" {
 		userIdInt, err = strconv.Atoi(userIdStr)
 		if err != nil {
-			return server.Output{
-				Data: server.JsonError{
-					Error: err.Error(),
-					Code:  400,
-				},
-				Code: 400,
-			}
+			c.JSON(400, server.JsonError{
+				Error: err.Error(),
+				Code:  400,
+			})
+			return
 		}
 	}
 
@@ -215,40 +188,31 @@ func (h Handler) HandleDeleteUser(inputs server.Input) (output server.Output) {
 	}
 	usr, isFound, err := userProvider.GetUserById(userIdInt)
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  500,
-			},
-			Code: 500,
-		}
+		c.JSON(500, server.JsonError{
+			Error: err.Error(),
+			Code:  500,
+		})
+		return
 	}
 
 	if !isFound {
-		return server.Output{
-			Data: server.JsonError{
-				Error: "User id is not found",
-				Code:  404,
-			},
-			Code: 404,
-		}
+		c.JSON(404, server.JsonError{
+			Error: "User id is not found",
+			Code:  404,
+		})
+		return
 	}
 
 	err = userProvider.DeleteUser(&usr)
 	if err != nil {
-		return server.Output{
-			Data: server.JsonError{
-				Error: err.Error(),
-				Code:  500,
-			},
-			Code: 500,
-		}
+		c.JSON(500, server.JsonError{
+			Error: err.Error(),
+			Code:  500,
+		})
+		return
 	}
 
-	return server.Output{
-		Data: helper.Success{
-			Message: fmt.Sprintf("Successfully deleted user %d", userIdInt),
-		},
-		Code: 200,
-	}
+	c.JSON(200, helper.Success{
+		Message: fmt.Sprintf("Successfully deleted user %d", userIdInt),
+	})
 }

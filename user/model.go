@@ -1,6 +1,9 @@
 package user
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"github.com/lib/pq"
+)
 
 type User struct {
 	gorm.Model
@@ -8,9 +11,9 @@ type User struct {
 	Age             int
 	JobTitle        string
 	Image           string
-	Characteristics []string `gorm:"-"`
-	Likes           []string `gorm:"-"`
-	Dislikes        []string `gorm:"-"`
+	Characteristics pq.StringArray `gorm:"type:TEXT[]"`
+	Likes           pq.StringArray `gorm:"type:TEXT[]"`
+	Dislikes        pq.StringArray `gorm:"type:TEXT[]"`
 	BackgroundColor string
 	NameFontColor   string
 	JobFontColor    string
