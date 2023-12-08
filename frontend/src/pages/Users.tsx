@@ -8,7 +8,6 @@ import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
 const backendUrl = "http://localhost:34567/users?id=";
-const changeUserUrl = "http://127.0.0.1:34567/user-change?id=";
 
 export default function Users() {
   return (
@@ -29,6 +28,9 @@ export default function Users() {
 }
 
 export function Change() {
+  const [selectedFile, setSelectedFile] = useState<File>();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
   let { userId } = useParams();
   const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
@@ -95,7 +97,12 @@ export function Change() {
       About: about,
     }
 
-    fetch(changeUserUrl + userId, {
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append('File', selectedFile);
+    }
+
+    fetch(backendUrl + userId, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,6 +123,11 @@ export function Change() {
         setErrorText(error.message)
       })
   };
+
+  const changeHandler = (event: any) => {
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
 
   const setCharacteristicsFromFlatValue = (characteristics: string) => {
     const characteristicsArray = characteristics.split(",")
@@ -166,7 +178,14 @@ export function Change() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" value={image} onChange={e => setImage(e.target.value)} />
+          <Form.Control type="file" value={image} onChange={changeHandler} />
+          {isFilePicked && selectedFile && (
+              <div>
+                <p>Filename: {selectedFile.name}</p>
+                <p>Filetype: {selectedFile.type}</p>
+                <p>Size in bytes: {selectedFile.size}</p>
+              </div>
+         )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">
           <Form.Label htmlFor="exampleColorInput">Choose your Background color</Form.Label>
@@ -198,6 +217,9 @@ export function Change() {
 
 
 export function Create() {
+  const [selectedFile, setSelectedFile] = useState<File>();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+
   const [errorText, setErrorText] = useState('')
   const [successText, setSuccessText] = useState('')
   const [firstName, setFirstName] = useState('');
@@ -231,7 +253,7 @@ export function Create() {
       About: about,
     }
 
-    fetch(changeUserUrl, {
+    fetch(backendUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -266,6 +288,10 @@ export function Create() {
     setDislikes(dislikesArray)
   }
 
+  const changeHandler = (event: any) => {
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
 
   return (
     <>
@@ -304,7 +330,14 @@ export function Create() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" onChange={e => setImage(e.target.value)} />
+          <Form.Control type="file" onChange={changeHandler} />
+          {isFilePicked && selectedFile && (
+              <div>
+                <p>Filename: {selectedFile.name}</p>
+                <p>Filetype: {selectedFile.type}</p>
+                <p>Size in bytes: {selectedFile.size}</p>
+              </div>
+         )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">
           <Form.Label htmlFor="exampleColorInput">Choose your Background color</Form.Label>
