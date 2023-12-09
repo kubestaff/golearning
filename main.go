@@ -35,6 +35,7 @@ func main() {
 	r.GET("/users", userHandler.HandleUsers)
 	r.DELETE("/users", userHandler.HandleDeleteUser)
 	r.POST("/users", userHandler.HandleChangeUser)
+	r.POST("/upload", user.Upload)
 
 	//r.GET("/setting", settingsHandler.HandleReadSetting)
 
