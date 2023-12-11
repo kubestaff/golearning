@@ -1,14 +1,19 @@
 package user
 
-import "github.com/kubestaff/golearning/helper"
+import (
+	"errors"
+	"gorm.io/gorm"
+)
 
-type Provider struct{}
-
-const FileName = "data/userData.json"
+type Provider struct {
+	DbConnection *gorm.DB
+}
 
 func (p Provider) GetAll() ([]User, error) {
 	users := []User{}
-	err := helper.ReadFromJSONFile(FileName, &users)
+	result := p.DbConnection.Find(&users)
+
+	err := result.Error
 	if err != nil {
 		return nil, err
 	}
@@ -26,38 +31,29 @@ func (p Provider) GetAll() ([]User, error) {
 // }
 
 func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
-	users, err := p.GetAll()
+	usr = User{}
+
+	result := p.DbConnection.First(&usr, id)
+
+	err = result.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return usr, false, nil
+	}
+
 	if err != nil {
-		return User{}, false, err
+		return usr, false, err
 	}
 
-	for _, user := range users {
-		if int(user.ID) == id {
-			return user, true, nil
-		}
-	}
-
-	return User{}, false, nil
+	return usr, true, nil
 }
 
-func (p Provider) SaveUsers(users *[]User) error {
-	return helper.SaveJSONFile(FileName, users)
-}
+func (p Provider) SaveUser(usr *User) error {
+	result := p.DbConnection.Save(usr)
 
-func (p Provider) SaveUser(user User) error {
-	users, err := p.GetAll()
+	err := result.Error
 	if err != nil {
 		return err
 	}
 
-	for i, existingUser := range users {
-		if int(existingUser.ID) == int(user.ID) {
-			users[i] = user
-			return helper.SaveJSONFile(FileName, &users)
-		}
-	}
-
-	users = append(users, user)
-	return helper.SaveJSONFile(FileName, &users)
-
+	return nil
 }
