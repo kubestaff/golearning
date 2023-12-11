@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 
 	"github.com/kubestaff/golearning/home"
 	"github.com/kubestaff/golearning/user"
@@ -9,12 +8,6 @@ import (
 )
 
 func main() {
-	provider := user.Provider{}
-	err := provider.SaveUsers()
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	opts := server.Options{
 		Port: 34567,
 	}
