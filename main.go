@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/kubestaff/golearning/db"
+	"github.com/kubestaff/golearning/file"
 	"github.com/kubestaff/golearning/user"
 )
 
@@ -32,9 +33,14 @@ func main() {
 		DbConnection: dbConn,
 	}
 
+	fileHandler := file.Handler{
+		DbConnection: dbConn,
+	}
+
 	r.GET("/users", userHandler.HandleUsers)
 	r.DELETE("/users", userHandler.HandleDeleteUser)
 	r.POST("/users", userHandler.HandleChangeUser)
+	r.POST("/upload", fileHandler.Upload)
 
 	//r.GET("/setting", settingsHandler.HandleReadSetting)
 
