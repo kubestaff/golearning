@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manage User Settings</title>
+
+</head>
+
+<body>
+    <h1>Manage User Settings</h1>
+    <form method="get" name="userSettings">
+        <label for="AmountOfUsersOnMainPageInput">How many users do you want to show on main page</label>
+        <input type="number" name="AmountOfUsersOnMainPage" id="AmountOfUsersOnMainPageInput" min="5" max="100"
+            value="%amountOfUsersOnMainPage%" />
+        <input type="hidden" name="id" value="%id%">
+        <button type="submit">save</button>
+    </form>
+
+</body>
+
+</html>

@@ -1,8 +1,8 @@
 package main
 
 import (
-
 	"github.com/kubestaff/golearning/home"
+	"github.com/kubestaff/golearning/setting"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
@@ -19,6 +19,7 @@ func main() {
 
 	s.Handle("/", home.HandleHome)
 	s.Handle("/me", user.HandleMe)
+	s.Handle("/setting", setting.HandleReadSetting)
 	
 	s.Start()
 }
