@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 
+	"github.com/kubestaff/golearning/home"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
@@ -20,9 +19,6 @@ func main() {
 
 	s.Handle("/", home.HandleHome)
 	s.Handle("/me", user.HandleMe)
-	s.HandleJSON("/colors", HandleJsonOutput)
-	s.HandleJSON("/add-color", HandleJsonInputFromParams)
-	s.HandleJSON("/add-color-json", HandleJsonInputFromBody)
 	
 	s.Start()
 }
