@@ -34,10 +34,20 @@ func (p Provider) SaveUsers(users *[]User) error {
   return helpers.SaveJSONFile(fileName, users)
 }
 
-func (p Provider) SaveUser(user *User) error {
+func (p Provider) SaveUser(user User) error {
 	//find the user
+	users, err := p.GetAll()
+	if err != nil {
+		return err
+	}
 	//if the user is found, replace/update it in the file
+	for i, existingUser := range users{
+		if existingUser.Id == user.Id {
+			users[i] = user
+			return helpers.SaveJSONFile(fileName, &users)
+		}
+	}
 	//if the user is not found, add the user to the bottom
-	// if the file cannot be saved, return an err
-	return nil
+	users = append(users, user)
+	return helpers.SaveJSONFile(fileName, &users)
 }

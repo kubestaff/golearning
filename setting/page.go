@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"errors"
 	"os"
 	"strconv"
 
@@ -17,12 +16,12 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 	}
 
 	if inputs.Get("amountOfUsersOnMainPage") != "" {
-		return HandleformSetting(inputs)
+		return HandleFormSetting(inputs)
 	}
 
-	userProvider := Provider{}
-	setting, isFound, err := userProvider.GetSettingByUserId(userIdInt)
-	if err != nil {
+	settingsProvider := Provider{}
+	setting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
+	if err != nil && !os.IsNotExist(err) {
 		return helpers.HandleErr(err)
 	}
 
@@ -38,7 +37,7 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 	return "html/setting.html", output
 }
 
-func HandleformSetting(inputs server.Input) (filename string, placeholders map[string]string) {
+func HandleFormSetting(inputs server.Input) (filename string, placeholders map[string]string) {
 	amountOfUsersOnMainPageSubmittedStr := inputs.Get("amountOfUsersOnMainPage")
 	amountOfUsersOnMainPageSubmittedInt, err := strconv.Atoi(amountOfUsersOnMainPageSubmittedStr)
 	if err != nil {
@@ -53,7 +52,7 @@ func HandleformSetting(inputs server.Input) (filename string, placeholders map[s
 
 	settingsProvider := Provider{}
 	existingSetting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err != nil && !os.IsNotExist(err) {
 		return helpers.HandleErr(err)
 	}
 
