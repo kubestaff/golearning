@@ -6,6 +6,7 @@ type Provider struct{}
 
 const fileName = "data/userData.json"
 
+
 func (p Provider) GetAll() ([]User, error) {
 	var users []User
 	err :=  helpers.ReadFromJSONFile(fileName, &users)
