@@ -1,0 +1,17 @@
+[
+    {
+        "Id": 1,
+        "AmountOfUsersOnMainPage": 7,
+        "UserId": 1
+    },
+    {
+        "Id": 2,
+        "AmountOfUsersOnMainPage": 14,
+        "UserId": 2
+    },
+    {
+        "Id": 3,
+        "AmountOfUsersOnMainPage": 20,
+        "UserId": 5
+    }
+]

@@ -3,6 +3,10 @@ package home
 import (
 	"fmt"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> oreva
 =======
 
 >>>>>>> oreva
@@ -11,6 +15,7 @@ import (
 	"github.com/kubestaff/web-helper/server"
 )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // <li><a href="/me?id=1">Oreva</a>
 // <li><a href="/me?id=2">Ansel</a>
@@ -29,6 +34,8 @@ func HandleHome(inputs server.Input) (filename string, placeholders map[string]s
 	userLinksFlat := helpers.WrapStringsToTags(listOfLinks, "Li")
 	variables := map[string]string{"%users%": userLinksFlat}
 =======
+=======
+>>>>>>> oreva
 func HandleHome(inputs server.Input) (filename string, placeholders map[string]string) {
 	provider := user.Provider{}
 
@@ -46,6 +53,9 @@ func HandleHome(inputs server.Input) (filename string, placeholders map[string]s
 	userLinkFlat := helpers.WrapStringsToTags(listOfLinks, "li")
 
 	variables := map[string]string{"%users%": userLinkFlat}
+<<<<<<< HEAD
+>>>>>>> oreva
+=======
 >>>>>>> oreva
 	return "html/index.html", variables
 }

@@ -1,8 +1,13 @@
 package main
 
 import (
+<<<<<<< HEAD
 
 	"github.com/kubestaff/golearning/home"
+=======
+	"github.com/kubestaff/golearning/home"
+	"github.com/kubestaff/golearning/setting"
+>>>>>>> oreva
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 )
@@ -19,10 +24,15 @@ func main() {
 
 	s.Handle("/", home.HandleHome)
 	s.Handle("/me", user.HandleMe)
+<<<<<<< HEAD
+=======
+	s.Handle("/setting", setting.HandleReadSetting)
+>>>>>>> oreva
 	
 	s.Start()
 }
 
+<<<<<<< HEAD
 type Color struct {
 	Name string
 	Code string
@@ -155,3 +165,7 @@ func HandleIndex(inputs server.Input) (filename string, placeholders map[string]
 	variables := map[string]string{"%name%": "Max Mustermann"}
 	return "html/index.html", variables
 }
+=======
+
+
+>>>>>>> oreva
