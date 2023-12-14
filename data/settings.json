@@ -1,17 +1,1 @@
-[
-    {
-        "Id": 1,
-        "AmountOfUsersOnMainPage": 7,
-        "UserId": 1
-    },
-    {
-        "Id": 2,
-        "AmountOfUsersOnMainPage": 14,
-        "UserId": 2
-    },
-    {
-        "Id": 3,
-        "AmountOfUsersOnMainPage": 20,
-        "UserId": 5
-    }
-]
+[{"Id":1,"AmountOfUsersOnMainPage":13,"UserId":1},{"Id":2,"AmountOfUsersOnMainPage":18,"UserId":13}]

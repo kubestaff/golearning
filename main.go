@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+
+	"github.com/kubestaff/golearning/db"
 	"github.com/kubestaff/golearning/home"
 	"github.com/kubestaff/golearning/setting"
 	"github.com/kubestaff/golearning/user"
@@ -8,6 +11,18 @@ import (
 )
 
 func main() {
+	dbConn, err := db.CreateDatabase()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	err = db.Migrate(dbConn)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	opts := server.Options{
 		Port: 34567,
 	}
