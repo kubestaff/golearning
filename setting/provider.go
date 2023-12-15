@@ -49,7 +49,7 @@ func (p Provider) SaveSetting(newSetting *UserSetting) error {
 func (p Provider) insertSetting(setting *UserSetting) error {
 	existingSettings, err := p.GetAll()
 	if os.IsNotExist(err) {
-		setting.ID = len(existingSettings) + 1
+		setting.ID = uint(len(existingSettings) + 1)
 		settingsToSave := []UserSetting{
 			*setting,
 		}
@@ -58,7 +58,7 @@ func (p Provider) insertSetting(setting *UserSetting) error {
 	if err != nil {
 		return err
 	}
-	setting.ID = len(existingSettings) + 1
+	setting.ID = uint(len(existingSettings) + 1)
 
 	existingSettings = append(existingSettings, *setting)
 	return p.SaveSettings(&existingSettings)
@@ -97,3 +97,7 @@ func (p Provider) findSettingsById(settings []UserSetting, id int) (*UserSetting
 	}
 	return nil, -1, false
 }
+
+
+//int -3, -2, -1, 0, 1, 2, 3
+//uint 0
