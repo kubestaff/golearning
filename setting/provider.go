@@ -2,98 +2,41 @@ package setting
 
 import (
 	"errors"
-	"os"
 
-	"github.com/kubestaff/golearning/helpers"
+	"gorm.io/gorm"
 )
 
-type Provider struct{}
-
-const fileName = "data/settings.json"
+type Provider struct{
+	DbConnection *gorm.DB
+}
 
 func (p Provider) GetAll() ([]UserSetting, error) {
-	var users []UserSetting
-	err := helpers.ReadFromJSONFile(fileName, &users)
-	if err != nil {
-		return nil, err
+	var settings []UserSetting
+	result := p.DbConnection.Find(&settings)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	return users, nil
+	return settings, nil
 }
 
 func (p Provider) GetSettingByUserId(userId int) (s UserSetting, isFound bool, err error) {
-	settings, err := p.GetAll()
-	if err != nil {
-		return UserSetting{}, false, err
+	var setting UserSetting
+	result := p.DbConnection.First(&setting, "user_id = ?", userId)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return UserSetting{}, false, nil
 	}
+	if result.Error != nil {
+		return UserSetting{}, false, nil
+	}
+	return setting, true, nil
 
-	for _, setting := range settings {
-		if setting.UserId == userId {
-			return setting, true, nil
-		}
-	}
-	return UserSetting{}, false, nil
 }
 
-func (p Provider) SaveSettings(settings *[]UserSetting) error {
-
-	return helpers.SaveJSONFile(fileName, settings)
-}
 
 func (p Provider) SaveSetting(newSetting *UserSetting) error {
-	if newSetting.Id == 0 {
-		return p.insertSetting(newSetting)
+	result := p.DbConnection.Save(newSetting)
+	if result.Error != nil {
+		return result.Error
 	}
-	return p.updateSetting(newSetting)
-}
-
-func (p Provider) insertSetting(setting *UserSetting) error {
-	existingSettings, err := p.GetAll()
-	if os.IsNotExist(err) {
-		setting.Id = len(existingSettings) + 1
-		settingsToSave := []UserSetting{
-			*setting,
-		}
-		return p.SaveSettings(&settingsToSave)
-	}
-	if err != nil {
-		return err
-	}
-	setting.Id = len(existingSettings) + 1
-
-	existingSettings = append(existingSettings, *setting)
-	return p.SaveSettings(&existingSettings)
-}
-
-// implement the updateSetting function
-func (p Provider) updateSetting(setting *UserSetting) error {
-	existingSettings, err := p.GetAll()
-	if err != nil {
-		return err
-	}
-
-	_, foundIndex, found := p.findSettingsById(existingSettings, setting.Id)
-	if !found {
-		return errors.New("setting not found to update")
-	}
-
-	foundSetting := existingSettings[foundIndex]
-	foundSetting.UserId = setting.UserId
-
-	if foundSetting.AmountOfUsersOnMainPage != setting.AmountOfUsersOnMainPage {
-		foundSetting.AmountOfUsersOnMainPage = setting.AmountOfUsersOnMainPage
-	}
-
-	existingSettings[foundIndex] = foundSetting
-
-	return p.SaveSettings(&existingSettings)
-
-}
-
-func (p Provider) findSettingsById(settings []UserSetting, id int) (*UserSetting, int, bool) {
-	for i, setting := range settings {
-		if setting.Id == id {
-			return &setting, i, true
-		}
-	}
-	return nil, -1, false
+	return nil
 }

@@ -6,10 +6,17 @@ import (
 	"github.com/kubestaff/golearning/helpers"
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
+	"gorm.io/gorm"
 )
 
-func HandleHome(inputs server.Input) (filename string, placeholders map[string]string) {
-	provider := user.Provider{}
+type Handler struct {
+	DbConnection *gorm.DB
+}
+
+func (h Handler) HandleHome(inputs server.Input) (filename string, placeholders map[string]string) {
+	provider := user.Provider{
+		DbConnection: h.DbConnection,
+	}
 
 	users, err := provider.GetAll()
 	if err != nil {

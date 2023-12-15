@@ -5,17 +5,23 @@ import (
 
 	"github.com/kubestaff/golearning/helpers"
 	"github.com/kubestaff/web-helper/server"
-	
+	"gorm.io/gorm"
 )
 
-func HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
+type Handler struct {
+	DbConnection *gorm.DB
+}
+
+func (h Handler) HandleMe(inputs server.Input) (filename string, placeholders map[string]string) {
 	userIdStr := inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
 		return helpers.HandleErrorText("Invalid user id")
 	}
 
-	userProvider := Provider{}
+	userProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
 	user, isFound, err := userProvider.GetUserById(userIdInt)
 	if err != nil {
 		return helpers.HandleErr(err)
