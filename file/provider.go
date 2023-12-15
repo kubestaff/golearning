@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/kubestaff/golearning/apperror"
 	"gorm.io/gorm"
 )
 
@@ -18,11 +19,11 @@ func SaveFile(c *gin.Context, file File, dbConn *gorm.DB, fileName string) (stri
 	if file.Uuid != "" {
 		dbConn.Find(&dbFile, "uuid = ?", file.Uuid)
 		if dbFile.ID == 0 {
-			return "", fmt.Errorf("invalid uuid: %s for file %s", file.Uuid, file.Content.Filename)
+			return "", fmt.Errorf("invalid uuid: %s for file %s: %w", file.Uuid, file.Content.Filename, apperror.ErrInvalidInput)
 		}
 
 		tempPath := filepath.Join(UploadPath, dbFile.Uuid)
-		if _, err := os.Stat(tempPath); os.IsNotExist(err) {
+		if _, e := os.Stat(tempPath); os.IsNotExist(e) {
 			return "", fmt.Errorf("invalid uuid: %s for file %s", file.Uuid, file.Content.Filename)
 		}
 
@@ -49,4 +50,14 @@ func SaveFile(c *gin.Context, file File, dbConn *gorm.DB, fileName string) (stri
 	}
 
 	return dbFile.Uuid, err
+}
+
+func GetPathByUuid(uuid string, dbConn *gorm.DB) (string, error) {
+	dbFile := DbFile{}
+	dbConn.Find(&dbFile, "uuid = ?", uuid)
+	if dbFile.ID == 0 {
+		return "", nil
+	}
+
+	return filepath.Join(UploadPath, dbFile.Uuid, dbFile.FileName), nil
 }

@@ -41,6 +41,7 @@ func main() {
 	r.DELETE("/users", userHandler.HandleDeleteUser)
 	r.POST("/users", userHandler.HandleChangeUser)
 	r.POST("/upload", fileHandler.Upload)
+	r.Static("/static/uploads", "./static/uploads")
 
 	//r.GET("/setting", settingsHandler.HandleReadSetting)
 

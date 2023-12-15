@@ -8,6 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
 const backendUrl = "http://localhost:34567/users?id=";
+const uploadUrl = "http://localhost:34567/upload";
 
 export default function Users() {
   return (
@@ -25,6 +26,29 @@ export default function Users() {
       </Row>
     </div>
   );
+}
+
+function updateUser(userId: string | undefined, data: any, setErrorText: any, setSuccessText: any) {
+  fetch(backendUrl + userId, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then(response => {
+    return response.json()
+  }).then(data => {
+    if (data.Error) {
+      setErrorText(data.Error)
+      return
+    }
+    if (data.Message) {
+      setSuccessText(data.Message)
+    }
+  })
+    .catch(error => {
+      setErrorText(error.message)
+    })
 }
 
 export function Change() {
@@ -64,12 +88,12 @@ export function Change() {
         setCharacteristics(data.Characteristics)
         setLikes(data.likes)
         setDislikes(data.Dislikes)
-        setImage(data.Image)
         setBackground(data.backgroundCol)
         setNamecol(data.nameCol)
         setJobcol(data.jobCol)
         setAgecol(data.ageCol)
         setAbout(data.about)
+        setImage(data.Image)
       })
       .catch(error => {
         setErrorText(error.message)
@@ -97,31 +121,34 @@ export function Change() {
       About: about,
     }
 
-    const formData = new FormData();
-    if (selectedFile) {
-      formData.append('File', selectedFile);
-    }
+    if (isFilePicked) {
+      const formData = new FormData();
+      if (selectedFile) {
+        formData.append("file", selectedFile, selectedFile.name)
+        if (image) {
+          formData.append("uuid", image)
+        }
+      }
 
-    fetch(backendUrl + userId, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(response => {
-      return response.json()
-    }).then(data => {
-      if (data.Error) {
-        setErrorText(data.Error)
-        return
-      }
-      if (data.Message) {
-        setSuccessText(data.Message)
-      }
-    })
-      .catch(error => {
-        setErrorText(error.message)
+      fetch(uploadUrl, {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        return response.json()
+      }).then(responseData => {
+        if (responseData.Error) {
+          setErrorText(responseData.Error)
+          return
+        }
+        data.Image = responseData.Uuid
+        updateUser(userId, data, setErrorText, setSuccessText)
       })
+        .catch(error => {
+          setErrorText(error.message)
+        })
+    } else {
+      updateUser(userId, data, setErrorText, setSuccessText)
+    }
   };
 
   const changeHandler = (event: any) => {
@@ -178,13 +205,9 @@ export function Change() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="img">
           <Form.Label>Image</Form.Label>
-          <Form.Control type="file" value={image} onChange={changeHandler} />
+          <Form.Control type="file" onChange={changeHandler} />
           {isFilePicked && selectedFile && (
-              <div>
-                <p>Filename: {selectedFile.name}</p>
-                <p>Filetype: {selectedFile.type}</p>
-                <p>Size in bytes: {selectedFile.size}</p>
-              </div>
+             <img src={URL.createObjectURL(selectedFile)} width={100} className={"pt-2"}/>
          )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">

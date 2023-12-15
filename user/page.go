@@ -19,6 +19,11 @@ type Handler struct {
 	DbConnection *gorm.DB
 }
 
+type UserExt struct {
+	User
+	ImagePath string
+}
+
 func (h Handler) HandleUser(c *gin.Context) {
 	userIdStr := c.Query("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
@@ -50,7 +55,12 @@ func (h Handler) HandleUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, user)
+	userEx := UserExt{
+		User: user,
+		ImagePath: "/lslsls",
+	}
+
+	c.JSON(200, userEx)
 }
 
 func (h Handler) HandleUsers(c *gin.Context) {
