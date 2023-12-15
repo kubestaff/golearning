@@ -13,6 +13,18 @@ import (
 )
 
 func main() {
+	dbConn, error := db.CreateDatatbase()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	err = db.Migrate(dbConn)
+	if err != nil {
+		log.Fatal(err)
+		return 
+	}
+
 	opts := server.Options{
 		Port: 34567,
 	}

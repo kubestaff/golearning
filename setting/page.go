@@ -61,7 +61,7 @@ func HandleFormSetting(inputs server.Input) (filename string, placeholders map[s
 		UserId:                  userIdInt,
 	}
 	if isFound {
-		newSetting.Id = existingSetting.Id
+		newSetting.ID = existingSetting.ID
 	}
 
 	err = settingsProvider.SaveSetting(&newSetting)
