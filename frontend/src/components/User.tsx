@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import {BackendUrl} from './Url'
 
 
 type User = {
@@ -12,7 +12,7 @@ type User = {
   setShowDetails: any
 }
 
-const backendUrl = "http://localhost:34567/users?id=";
+const backendUrl = BackendUrl + "/users?id=";
 
 export default function User({ id, name, age, jobTitle, showDetails, setShowDetails }: User) {
   // const fetchUserData = () => {

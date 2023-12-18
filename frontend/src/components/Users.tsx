@@ -5,7 +5,9 @@ import Stack from "react-bootstrap/Stack";
 
 import User from './User';
 
-const backendUrl = "http://localhost:34567/users";
+import { BackendUrl } from './Url';
+
+const backendUrl = BackendUrl + "/users";
 
 export default function Users() {
   const [errorText, setErrorText] = useState('')
