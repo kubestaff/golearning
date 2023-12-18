@@ -2,6 +2,7 @@ package file
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 
@@ -12,6 +13,7 @@ import (
 )
 
 const UploadPath = "static/uploads"
+const UrlPath = "/static/uploads"
 
 func SaveFile(c *gin.Context, file File, dbConn *gorm.DB, fileName string) (string, error) {
 	uniqueFolderId := ""
@@ -60,4 +62,14 @@ func GetPathByUuid(uuid string, dbConn *gorm.DB) (string, error) {
 	}
 
 	return filepath.Join(UploadPath, dbFile.Uuid, dbFile.FileName), nil
+}
+
+func GetUrlByUuid(domain, uuid string, dbConn *gorm.DB) (string, error) {
+	dbFile := DbFile{}
+	dbConn.Find(&dbFile, "uuid = ?", uuid)
+	if dbFile.ID == 0 {
+		return "", nil
+	}
+
+	return url.JoinPath(domain, UrlPath, dbFile.Uuid, dbFile.FileName)
 }

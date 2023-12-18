@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kubestaff/golearning/file"
 	"github.com/kubestaff/golearning/helper"
 	"github.com/kubestaff/web-helper/server"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ type Handler struct {
 
 type UserExt struct {
 	User
-	ImagePath string
+	ImageUrl string
 }
 
 func (h Handler) HandleUser(c *gin.Context) {
@@ -55,9 +56,20 @@ func (h Handler) HandleUser(c *gin.Context) {
 		return
 	}
 
+	imageUrl := ""
+	if user.Image != "" {
+		imageUrl, err = file.GetUrlByUuid(helper.Domain, user.Image, h.DbConnection)
+		if err != nil {
+			c.JSON(500, server.JsonError{
+				Error: "Image cannot be read",
+				Code:  500,
+			})
+			return
+		}
+	}
 	userEx := UserExt{
 		User: user,
-		ImagePath: "/lslsls",
+		ImageUrl: imageUrl,
 	}
 
 	c.JSON(200, userEx)

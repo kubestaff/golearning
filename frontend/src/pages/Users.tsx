@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
-const backendUrl = "http://localhost:34567/users?id=";
+const backendUrl = "http://localhost:34567/users";
 const uploadUrl = "http://localhost:34567/upload";
 
 export default function Users() {
@@ -29,7 +29,12 @@ export default function Users() {
 }
 
 function updateUser(userId: string | undefined, data: any, setErrorText: any, setSuccessText: any) {
-  fetch(backendUrl + userId, {
+  let updateUserUrl = backendUrl
+  if (userId) {
+    updateUserUrl = `${updateUserUrl}?id=${userId}`
+  }
+
+  fetch(updateUserUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,9 +75,11 @@ export function Change() {
   const [ageCol, setAgecol] = useState('');
   const [about, setAbout] = useState('');
   const [errorText, setErrorText] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
 
   const fetchUserData = function () {
-    fetch(backendUrl + userId)
+    const fetchUserUrl = `${backendUrl}?id=${userId}`
+    fetch(fetchUserUrl)
       .then(response => {
         return response.json()
       })
@@ -94,6 +101,7 @@ export function Change() {
         setAgecol(data.ageCol)
         setAbout(data.about)
         setImage(data.Image)
+        setImageUrl(data.ImageUrl)
       })
       .catch(error => {
         setErrorText(error.message)
@@ -101,7 +109,9 @@ export function Change() {
   }
 
   useEffect(() => {
-    fetchUserData()
+    if (userId) {
+      fetchUserData()
+    }
   }, [])
 
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -208,6 +218,9 @@ export function Change() {
           <Form.Control type="file" onChange={changeHandler} />
           {isFilePicked && selectedFile && (
              <img src={URL.createObjectURL(selectedFile)} width={100} className={"pt-2"}/>
+         )}
+         {!isFilePicked && imageUrl !== '' && (
+             <img src={imageUrl} width={100} className={"pt-2"}/>
          )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="background colour">

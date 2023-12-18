@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kubestaff/golearning/db"
 	"github.com/kubestaff/golearning/file"
+	"github.com/kubestaff/golearning/helper"
 	"github.com/kubestaff/golearning/user"
 )
 
@@ -45,5 +46,5 @@ func main() {
 
 	//r.GET("/setting", settingsHandler.HandleReadSetting)
 
-	r.Run(":34567")
+	r.Run(":" + helper.Port)
 }
