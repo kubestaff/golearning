@@ -31,3 +31,11 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 
 	return user, true, nil
 }
+
+func (p Provider) SaveUser(newUser *User) error {
+	result := p.DbConnection.Save(newUser)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
