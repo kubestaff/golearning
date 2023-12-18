@@ -41,8 +41,9 @@ func main() {
 
 	s.Handle("/", homeHandler.HandleHome)
 	s.Handle("/me10", userHandler.HandleMe10)
-	s.Handle("/user", userHandler. HandleReadUser)
+	s.Handle("/user", userHandler.HandleReadUser)
 	s.Handle("/setting", settingsHandler.HandleReadSetting)
+	s.Handle("/user-delete", userHandler.HandleDeleteUser)
 	
 	s.Start()
 }
