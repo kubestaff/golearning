@@ -21,7 +21,7 @@ func (p Provider) GetAll() ([]User, error) {
 
 func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	var user User
-	result := p.DbConnection.First(&user, "user_id = ?", id)
+	result := p.DbConnection.First(&user, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return User{}, false, nil
 	}
