@@ -57,7 +57,9 @@ func (h Handler) HandleFormSetting(inputs server.Input) (filename string, placeh
 		return helpers.HandleErrorText("invalid user id")
 	}
 
-	settingsProvider := Provider{}
+	settingsProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
 	existingSetting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
 	if err != nil && !os.IsNotExist(err) {
 		return helpers.HandleErr(err)
