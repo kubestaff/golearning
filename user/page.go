@@ -12,52 +12,50 @@ type Handler struct {
 	DbConnection *gorm.DB
 }
 
-func (h Handler) HandleMe10(inputs server.Input) (filename string, placeholders map[string]string) {
+func (h Handler) HandleMe10(inputs server.Input) (server.Output) {
 	userIdStr :=inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
-		return helper.HandleErrorText("Invalid user id")
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  400,
+			},
+			Code: 400,
+		} 
 	}
 
 
 	usersProvider := Provider{
 		DbConnection: h.DbConnection,
 	}
-	//todo handle error
-	user, isFound,_ := usersProvider.GetUserById(userIdInt)
+	user, isFound, err := usersProvider.GetUserById(userIdInt)
+	if err != nil {
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		} 
+	}
+
 	if !isFound {
-		return helper.HandleErrorText("Not found")
+		return server.Output{
+			Data: server.JsonError{
+				Error: "User not found",
+				Code:  404,
+			},
+			Code: 404,
+		} 	
 	}
 
-	//<li>characteristic[0]</li>
-	//<li>characteristic[1]</li>
-	//<li>characteristic[2]</li>
-	//convert to:
-	//<li>characteristic[0]</li><li>characteristic[1]</li><li>characteristic[2]</li>
-
-	characteristicsStr := helper.WrapStringsToTags(user.Characteristics, "li")
-	likesStr := helper.WrapStringsToTags(user.Likes, "li")
-	dislikesStr := helper.WrapStringsToTags(user.Dislikes, "li")
-
-
-
-	output := map[string]string{
-		"%name%": 				user.Name,
-		"%job-title%": 			user.JobTitle,
-		"%age%": 				strconv.Itoa(user.Age),
-		"%image%":				user.Image,
-		"%characteristics%":	characteristicsStr,
-		"%likes%":				likesStr,
-		"%dislikes%":			dislikesStr,
-		"%about%":				user.About,
-		"%backgroundColor%":	user.BackgroundColor,
-		"%nameColor%":			user.NameFontColor,
-		"%jobColor%":			user.JobFontColor,
-		"%ageColor%":			user.AgeFontColor,
+	return server.Output{
+		Data: user,
+		Code: 200,
 	}
 
-	return "html/me10.html", output
-
+	
 }
 
 func (h Handler) HandleReadUser(inputs server.Input) (filename string, placeholders map[string]string) {
@@ -191,7 +189,7 @@ func (h Handler) HandleReadUser(inputs server.Input) (filename string, placehold
 	}
 
 	func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeholders map[string]string) {
-		userIdStr :=inputs.Values.Get("id")
+		userIdStr := inputs.Values.Get("id")
 
 		userIdInt := 0
 		var err error 

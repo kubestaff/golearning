@@ -1,6 +1,6 @@
 package helper
 
-func HandleErrorText(errText string) (flename string, placeholders map[string]string) {
+func HandleErrorText(errText string) (filename string, placeholders map[string]string) {
 	output := map[string]string{
 		"%error%": 	errText,	
 	}
@@ -8,6 +8,6 @@ func HandleErrorText(errText string) (flename string, placeholders map[string]st
 	return "html/error.html", output
 }
 
-func HandleErr(err error) (flename string, placeholders map[string]string) {
+func HandleErr(err error) (filename string, placeholders map[string]string) {
 	return HandleErrorText(err.Error())
 }

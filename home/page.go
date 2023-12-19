@@ -1,38 +1,32 @@
 package home
 
-import (
-	"fmt"
-
-	"github.com/kubestaff/golearning/helper"
+import (	
 	"github.com/kubestaff/golearning/user"
 	"github.com/kubestaff/web-helper/server"
 	"gorm.io/gorm"
 )
 
-
 type Handler struct {
 	DbConnection *gorm.DB
 }
-//<a href="/me10?id=10">Yoni Makanda</a>
-//convert
-//<li><a href="/me10?id=10">Yoni Makanda</a></li>
-func (h Handler) HandleHome(inputs server.Input) (filename string, placeholders map[string]string) {
+
+func (h Handler) HandleHome(inputs server.Input) (o server.Output) {
 	provider := user.Provider{
 		DbConnection: h.DbConnection,
 	}
 	
 	users, err:= provider.GetAll()
 	if err != nil {
-		return helper.HandleErr(err)
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		} 
 	}
-
-	listOfLinks := []string{}
-	for _, usr := range users {
-		userLink := fmt.Sprintf(`<a href="/me10?id=%d">%s</a><a href="/user?id=%d"> Edit</a><a href="/user-Delete?id=%d"> Delete</a>`, usr.ID, usr.Name, usr.ID, usr.ID)
-		listOfLinks =append(listOfLinks, userLink )
+	return server.Output{
+		Data: users,
+		Code: 200,
 	}
-
-	userLinksFlat := helper.WrapStringsToTags(listOfLinks, "li")
-	variables := map[string]string{"%users%": userLinksFlat}
-	return "html/index.html", variables
 }
