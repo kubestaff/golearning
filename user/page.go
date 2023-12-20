@@ -57,10 +57,10 @@ func (h Handler) HandleReadUser(inputs server.Input) (filename string, placehold
 		return h.HandleCreateOrUpdate(inputs)
 	}
 
-	output := map[string]string {
-		"%id%": "",
+	output := map[string]string{
+		"%id%":   "",
 		"%name%": "",
-		"%age%": "",
+		"%age%":  "",
 	}
 	//if we have an id, we just want to read the user from the database
 	if inputs.Get("id") != "" {
@@ -69,7 +69,7 @@ func (h Handler) HandleReadUser(inputs server.Input) (filename string, placehold
 		if err != nil {
 			return helpers.HandleErrorText("invalid user id")
 		}
-		userProvider:= Provider{
+		userProvider := Provider{
 			DbConnection: h.DbConnection,
 		}
 		//fetch the user by id
@@ -95,35 +95,71 @@ func (h Handler) HandleCreateOrUpdate(inputs server.Input) (filename string, pla
 		if err != nil {
 			return helpers.HandleErrorText("invalid user id")
 		}
-	} 
+	}
 
-		name := inputs.Get("name")
-		ageStr := inputs.Get("age")
-		ageInt, err := strconv.Atoi(ageStr)
-		if err != nil {
-			return helpers.HandleErrorText("invalid age")
-		}
-		userProvider:= Provider{
-			DbConnection: h.DbConnection,
-		}
+	name := inputs.Get("name")
+	ageStr := inputs.Get("age")
+	ageInt, err := strconv.Atoi(ageStr)
+	if err != nil {
+		return helpers.HandleErrorText("invalid age")
+	}
+	userProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
 
-		user := User{
-			Name: name,
-			Age: ageInt,
-		}
-		if userIdInt > 0 {
-			user.ID = uint(userIdInt)
-		}
+	user := User{
+		Name: name,
+		Age:  ageInt,
+	}
+	if userIdInt > 0 {
+		user.ID = uint(userIdInt)
+	}
 
-		err = userProvider.SaveUser(&user)
-		if err != nil {
-			return helpers.HandleErr(err)
-		}
+	err = userProvider.SaveUser(&user)
+	if err != nil {
+		return helpers.HandleErr(err)
+	}
 
-		output := map[string]string {
-		"%id%": userIdStr,
+	output := map[string]string{
+		"%id%":   userIdStr,
 		"%name%": name,
-		"%age%": ageStr,
-		}
+		"%age%":  ageStr,
+	}
 	return "html/userform.html", output
+}
+
+func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeholders map[string]string) {
+	userIdStr := inputs.Values.Get("id")
+	userIdInt := 0
+	var err error
+	if userIdStr != "" {
+		userIdInt, err = strconv.Atoi(userIdStr)
+		if err != nil {
+			return helpers.HandleErrorText("invalid user id")
+		}
+	}
+
+	userProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
+
+	usr, isFound, err := userProvider.GetUserById(userIdInt)
+	if err != nil {
+		return helpers.HandleErr(err)
+	}
+
+	if !isFound {
+		return helpers.HandleErrorText("user not found")
+	}
+
+	err = userProvider.DeleteUser(&usr)
+	if err != nil {
+		return helpers.HandleErr(err)
+	}
+
+	output := map[string]string{
+		"%success%": "User deleted successfully",
+	}
+
+	return "html/success.html", output
 }

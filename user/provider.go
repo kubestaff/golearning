@@ -39,3 +39,11 @@ func (p Provider) SaveUser(newUser *User) error {
 	}
 	return nil
 }
+
+func (p Provider) DeleteUser(user *User) error {
+	result := p.DbConnection.Delete(user)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

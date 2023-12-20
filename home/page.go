@@ -26,7 +26,7 @@ func (h Handler) HandleHome(inputs server.Input) (filename string, placeholders 
 	listOfLinks := []string{}
 
 	for _, user := range users {
-		userLink := fmt.Sprintf(`<a href="/me?id=%d">%s</a>`, user.ID, user.Name)
+		userLink := fmt.Sprintf(`<a href="/me?id=%d">%s</a>&nbsp  <a href="/user?id=%d">Edit</a> &nbsp <a href="/user-delete?id=%d">Delete</a>`, user.ID, user.Name, user.ID, user.ID)
 		listOfLinks = append(listOfLinks, userLink)
 	}
 	userLinkFlat := helpers.WrapStringsToTags(listOfLinks, "li")
