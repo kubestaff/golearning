@@ -20,6 +20,10 @@ func SaveJSONFile(fileName string, data any) error {
 }
 
 func ReadFromJSONFile(fileName string, targetData any) error {
+	_, err := os.Stat(fileName)
+	if err != nil {
+		return err
+	}
 	//get the data from the JSON file
 	jsonData, err := os.ReadFile(fileName)
 	if err != nil {

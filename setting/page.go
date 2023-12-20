@@ -1,7 +1,6 @@
 package setting
 
 import (
-	"errors"
 	"os"
 	"strconv"
 
@@ -22,7 +21,7 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 
 	settingsProvider := Provider{}
 	setting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err != nil && !os.IsNotExist(err) {
 		return helpers.HandleErr(err)
 	}
 
@@ -33,6 +32,49 @@ func HandleReadSetting(inputs server.Input) (filename string, placeholders map[s
 
 	if isFound {
 		output["%amountOfUsersOnMainPage%"] = strconv.Itoa(setting.AmountOfUsersOnMainPage)
+	}
+
+	return "html/setting.html", output
+
+}
+
+func HandleFormSetting(inputs server.Input) (filename string, placeholders map[string]string) {
+	amountOfUsersOnMainPageSubmittedStr := inputs.Get("amountOfUsersOnMainPage")
+	amountOfUsersOnMainPageSubmittedInt, err := strconv.Atoi(amountOfUsersOnMainPageSubmittedStr)
+	if err != nil {
+		return helpers.HandleErrorText("invalid amount of users on main page")
+	}
+
+	userIdStr := inputs.Get("id")
+	userIdInt, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		return helpers.HandleErrorText("invalid user id")
+	}
+
+	settingsProvider := Provider{}
+
+	existingSetting, isFound, err := settingsProvider.GetSettingByUserId(userIdInt)
+	if err != nil && !os.IsNotExist(err) {
+		return helpers.HandleErr(err)
+	}
+
+	newSetting := UserSetting{
+		AmountOfUsersOnMainPage: amountOfUsersOnMainPageSubmittedInt,
+		UserId:                  userIdInt,
+	}
+
+	if isFound {
+		newSetting.Id = existingSetting.Id
+	}
+
+	err = settingsProvider.SaveSetting(&newSetting)
+	if err != nil {
+		return helpers.HandleErr(err)
+	}
+
+	output := map[string]string{
+		"%amountOfUsersOnMainPage%": strconv.Itoa(amountOfUsersOnMainPageSubmittedInt),
+		"%id%":                      userIdStr,
 	}
 
 	return "html/setting.html", output
