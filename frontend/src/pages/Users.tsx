@@ -70,10 +70,10 @@ export function Change() {
   const [likes, setLikes] = useState<string[]>([]);
   const [dislikes, setDislikes] = useState<string[]>([]);
   const [image, setImage] = useState('');
-  const [backgroundCol, setBackground] = useState('');
-  const [nameCol, setNamecol] = useState('');
-  const [jobCol, setJobcol] = useState('');
-  const [ageCol, setAgecol] = useState('');
+  const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
+  const [nameColor, setNameColor] = useState('#000000');
+  const [jobColor, setJobColor] = useState('#000000');
+  const [ageColor, setAgeColor] = useState('#000000');
   const [about, setAbout] = useState('');
   const [errorText, setErrorText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
@@ -94,13 +94,24 @@ export function Change() {
         setAge(data.Age)
         setJobTitle(data.JobTitle)
         setCharacteristics(data.Characteristics)
-        setLikes(data.likes)
+        setLikes(data.Likes)
         setDislikes(data.Dislikes)
-        setBackground(data.backgroundCol)
-        setNamecol(data.nameCol)
-        setJobcol(data.jobCol)
-        setAgecol(data.ageCol)
-        setAbout(data.about)
+        if (data.BackgroundColor !== "") {
+          setBackgroundColor(data.BackgroundColor)
+        }
+        
+        if (data.NameFontColor !== "") {
+          setNameColor(data.NameFontColor)
+        }
+
+        if (data.JobFontColor !== "") {
+          setJobColor(data.JobFontColor)
+        }
+        if (data.AgeFontColor !== "") {
+          setAgeColor(data.AgeFontColor)
+        }
+        
+        setAbout(data.About)
         setImage(data.Image)
         setImageUrl(data.ImageUrl)
       })
@@ -125,10 +136,10 @@ export function Change() {
       Likes: likes,
       Dislikes: dislikes,
       Image: image,
-      Backgroundcol: backgroundCol,
-      Namecol: nameCol,
-      Jobcol: jobCol,
-      Agecol: ageCol,
+      backgroundColor: backgroundColor,
+      NameFontColor: nameColor,
+      JobFontColor: jobColor,
+      AgeFontColor: ageColor,
       About: about,
     }
 
@@ -190,31 +201,31 @@ export function Change() {
       </Alert>)}
       <h2>Change User </h2>
       <Form className="bg-gray p-3" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="name">
+        <Form.Group className="mb-3" id="name">
           <Form.Label>Name</Form.Label>
           <Form.Control type="text" value={firstName} required onChange={e => setFirstName(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="age">
+        <Form.Group className="mb-3" id="age">
           <Form.Label>Age</Form.Label>
           <Form.Control type="number" value={age} min={0} max={100} required onChange={e => setAge(Number(e.target.value))} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="job">
+        <Form.Group className="mb-3" id="job">
           <Form.Label>Job Title</Form.Label>
           <Form.Control type="text" required value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="characteristics">
+        <Form.Group className="mb-3" id="characteristics">
           <Form.Label >Characteristics</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" value={characteristics} onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="likes">
+        <Form.Group className="mb-3" id="likes">
           <Form.Label >Likes</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" value={likes} onChange={e => setLikesFromFlatValue(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="dislikes">
+        <Form.Group className="mb-3" id="dislikes">
           <Form.Label >Dislikes</Form.Label>
           <Form.Control size="sm" type="text" as="textarea" value={dislikes} onChange={e => setDislikesFromFlatValue(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="img">
+        <Form.Group className="mb-3" id="img">
           <Form.Label>Image</Form.Label>
           <Form.Control type="file" onChange={changeHandler} />
           {isFilePicked && selectedFile && (
@@ -224,25 +235,25 @@ export function Change() {
              <img src={imageUrl} width={100} className={"pt-2"}/>
          )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="background colour">
-          <Form.Label htmlFor="exampleColorInput">Choose your Background color</Form.Label>
-          <Form.Control type="color" id="exampleColorInput" defaultValue="#FFFFFF" placeholder="Choose your color" value={backgroundCol} onChange={e => setBackground(e.target.value)} />
+        <Form.Group className="mb-3" id="background colour">
+          <Form.Label htmlFor="backgroundColorInput">Choose your Background color</Form.Label>
+          <Form.Control type="color" id="backgroundColorInput" placeholder="Choose your color" value={backgroundColor} onChange={e => setBackgroundColor(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="name font colour">
-          <Form.Label htmlFor="exampleColorInput">Choose your Name font color</Form.Label>
-          <Form.Control type="color" id="exampleColorInput" defaultValue="#000000" placeholder="Choose your color" value={nameCol} onChange={e => setNamecol(e.target.value)} />
+        <Form.Group className="mb-3" id="name font colour">
+          <Form.Label htmlFor="nameColorInput">Choose your Name font color</Form.Label>
+          <Form.Control type="color" id="nameColorInput" placeholder="Choose your color" value={nameColor} onChange={e => setNameColor(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="job font colour">
-          <Form.Label htmlFor="exampleColorInput">Choose your Job font color</Form.Label>
-          <Form.Control type="color" id="exampleColorInput" defaultValue="#000000" placeholder="Choose your color" value={jobCol} onChange={e => setJobcol(e.target.value)} />
+        <Form.Group className="mb-3" id="job font colour">
+          <Form.Label htmlFor="jobColorInput">Choose your Job font color</Form.Label>
+          <Form.Control type="color" id="jobColorInput" placeholder="Choose your color" value={jobColor} onChange={e => setJobColor(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="age font colour">
-          <Form.Label htmlFor="exampleColorInput">Choose your Age font color</Form.Label>
-          <Form.Control type="color" id="exampleColorInput" defaultValue="#000000" placeholder="Choose your color" value={ageCol} onChange={e => setAgecol(e.target.value)} />
+        <Form.Group className="mb-3" id="age font colour">
+          <Form.Label htmlFor="ageColorInput">Choose your Age font color</Form.Label>
+          <Form.Control type="color" id="ageColorInput" placeholder="Choose your color" value={ageColor} onChange={e => setAgeColor(e.target.value)} />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="about">
+        <Form.Group className="mb-3" id="about">
           <Form.Label >Tell us about yourself</Form.Label>
-          <Form.Control size="lg" type="text" as="textarea" onChange={e => setAbout(e.target.value)} />
+          <Form.Control size="lg" type="text" as="textarea" value={about} onChange={e => setAbout(e.target.value)} />
         </Form.Group>
         <Button variant="primary" type="submit">
           Save
