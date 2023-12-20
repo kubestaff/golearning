@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { BackendUrl } from "../components/Url";
+import TagsInput from "../components/MultiValue";
 
 import React, { useState, useEffect } from 'react';
 const backendUrl = BackendUrl + "/users";
@@ -215,15 +216,15 @@ export function Change() {
         </Form.Group>
         <Form.Group className="mb-3" id="characteristics">
           <Form.Label >Characteristics</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={characteristics} onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
+          <Form.Control type="text" as="textarea" value={characteristics} onChange={e => setCharacteristicsFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" id="likes">
           <Form.Label >Likes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={likes} onChange={e => setLikesFromFlatValue(e.target.value)} />
+          <Form.Control type="text" as="textarea" value={likes} onChange={e => setLikesFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" id="dislikes">
           <Form.Label >Dislikes</Form.Label>
-          <Form.Control size="sm" type="text" as="textarea" value={dislikes} onChange={e => setDislikesFromFlatValue(e.target.value)} />
+          <Form.Control type="text" as="textarea" value={dislikes} onChange={e => setDislikesFromFlatValue(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" id="img">
           <Form.Label>Image</Form.Label>
@@ -254,6 +255,9 @@ export function Change() {
         <Form.Group className="mb-3" id="about">
           <Form.Label >Tell us about yourself</Form.Label>
           <Form.Control size="lg" type="text" as="textarea" value={about} onChange={e => setAbout(e.target.value)} />
+        </Form.Group>
+        <Form.Group className="mb-3" id="name">
+        <TagsInput/>
         </Form.Group>
         <Button variant="primary" type="submit">
           Save
