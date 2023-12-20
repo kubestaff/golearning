@@ -16,11 +16,13 @@ func (p Provider) GetAll() ([]User, error) {
 }
 
 func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
+
 	users, err := p.GetAll()
 	if err != nil {
 		return User{}, false, err
 	}
-	for _, user := range users{
+
+	for _, user := range users {
 		if user.Id == id {
 			return user, true, nil
 		}
@@ -28,54 +30,23 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	return User{}, false, nil
 }
 
-func (p Provider) SaveUsers() error {
-	users := []User{
-		{
-			Id: 1,
-			Name: "Funto Awoyelu",
-			Age: 26,
-			JobTitle: "Programme Manager",
-			Image: "funto.png",
-			Characteristics: []string{
-				"Dark brown hair",
-				"Dark brown eyes",
-				"5ft 3 height",
-			},
-			Likes: []string{
-				"Shopping",
-				"Good food",
-				"Exploring in nature",
-				"Meeting new people",
-			},
-			Dislikes: []string{
-				"Rudeness",
-				"Celery",
-			},
-			BackgroundColor: "#820D04",
-		},
-		{
-			Id: 2,
-			Name: "Farah",
-			Age: 25,
-			JobTitle: "Aspiring software engineer",
-			Image: "farah.jpeg",
-			Characteristics: []string{
-				"brown hair",
-				"brown eyes",
-				"5ft 5 height",
-			},
-			Likes: []string{
-				"Horse riding",
-				"Reading",
-				"Dancing",
-				"Socializing",
-			},
-			Dislikes: []string{
-				"Waking up early",
-				"brocolli",
-			},
-			BackgroundColor: "#04825E",
-		},
-	}
+func (p Provider) SaveUsers(users *[]User) error {
 	return helpers.SaveJSONFile(fileName, users)
+}
+
+func (p Provider) SaveUser(user User) error {
+	users, err := p.GetAll()
+	if err != nil {
+		return err
+	}
+
+	for i, existingUser := range users {
+		if existingUser.Id == user.Id {
+			users[i] = user
+			return helpers.SaveJSONFile(fileName, &users)
+		}
+	}
+	users = append(users, user)
+	return helpers.SaveJSONFile(fileName, &users)
+
 }
