@@ -30,9 +30,17 @@ func main() {
 	// we close the server at the end
 	defer s.Stop()
 
-	s.Handle("/", home.HandleIndex)
+	homeHandler := home.Handler {
+		DbConnection: dbConn,
+	}
+
+	settingHandler := setting.Handler {
+		DbConnection: dbConn,
+	}
+
+	s.Handle("/", homeHandler.HandleHome)
 	s.Handle("/me", user.HandleMe)
-	s.Handle("/setting", setting.HandleReadSetting)
+	s.Handle("/setting", settingHandler.HandleReadSetting)
 
 	s.Start()
 }
