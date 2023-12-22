@@ -23,7 +23,7 @@ func (p Provider) GetUserById(id int) (usr User, isFound bool, err error) {
 	}
 
 	for _, user := range users {
-		if user.Id == id {
+		if int(user.ID) == id {
 			return user, true, nil
 		}
 	}
@@ -41,7 +41,7 @@ func (p Provider) SaveUser(user User) error {
 	}
 
 	for i, existingUser := range users {
-		if existingUser.Id == user.Id {
+		if existingUser.ID == user.ID {
 			users[i] = user
 			return helpers.SaveJSONFile(fileName, &users)
 		}

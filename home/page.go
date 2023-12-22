@@ -19,7 +19,7 @@ func HandleIndex(inputs server.Input) (filename string, placeholders map[string]
 	listOfLinks := []string{}
 
 	for _, user := range users {
-		userLink := fmt.Sprintf(`<a href="/me?id=%d">%s</a>`, user.Id, user.Name)
+		userLink := fmt.Sprintf(`<a href="/me?id=%d">%s</a>`, user.ID, user.Name)
 		listOfLinks = append(listOfLinks, userLink)
 	}
 
