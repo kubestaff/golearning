@@ -28,7 +28,7 @@ func (h Handler) HandleMe(inputs server.Input) (filename string, placeholders ma
 
 	user, isFound, err := usersProvider.GetUserById(userIdInt)
 	if err != nil {
-		return helpers.HandleErrorText("User not found")
+		return helpers.HandleErr(err)
 	}
 
 	if !isFound {
@@ -57,7 +57,7 @@ func (h Handler) HandleMe(inputs server.Input) (filename string, placeholders ma
 
 func (h Handler) HandleReadUser(inputs server.Input) (filename string, placeholders map[string]string) {
 	if inputs.Get("name") != "" || inputs.Get("age") != "" {
-		return h.HandleCreateOrUpdate(inputs)
+		return h.HandleChangeUser(inputs)
 	}
 
 	output := map[string]string{
@@ -94,7 +94,7 @@ func (h Handler) HandleReadUser(inputs server.Input) (filename string, placehold
 
 }
 
-func (h Handler) HandleCreateOrUpdate(inputs server.Input) (filename string, placeholders map[string]string) {
+func (h Handler) HandleChangeUser(inputs server.Input) (filename string, placeholders map[string]string) {
  	userIdStr := inputs.Values.Get("id")
 	userIdInt := 0
 	var err error
@@ -138,6 +138,45 @@ func (h Handler) HandleCreateOrUpdate(inputs server.Input) (filename string, pla
 	}
 
 	return "html/userform.html", output
+
+}
+
+func (h Handler) HandleDeleteUser(inputs server.Input) (filename string, placeholders map[string]string) {
+	userIdStr := inputs.Values.Get("id")
+	userIdInt := 0
+	var err error
+
+	if userIdStr != "" {
+		userIdInt, err = strconv.Atoi(userIdStr)
+		if err != nil {
+			return helpers.HandleErrorText("invalid user id")
+		}
+	}
+
+	userProvider := Provider{
+		DbConnection: h.DbConnection,
+	}
+
+	 usr, isFound, err := userProvider.GetUserById(userIdInt)
+	 if err != nil {
+		return helpers.HandleErr(err)
+	 }
+
+	 if !isFound {
+		return helpers.HandleErrorText("user id is not found")
+	 }
+
+	 err = userProvider.DeleteUser(&usr)
+	 if err != nil {
+		return helpers.HandleErr(err)
+	 }
+
+	 output := map[string]string{
+		"%success%": "Successfully deleted user",
+	 }
+
+	 return "html/success.html", output
+	
 
 }
 
