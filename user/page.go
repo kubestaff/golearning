@@ -12,7 +12,7 @@ type Handler struct {
 	DbConnection *gorm.DB
 }
 
-func (h Handler) HandleMe10(inputs server.Input) (server.Output) {
+func (h Handler) HandleUser(inputs server.Input) (server.Output) {
 	userIdStr :=inputs.Values.Get("id")
 	userIdInt, err := strconv.Atoi(userIdStr)
 	if err != nil {
@@ -53,9 +53,28 @@ func (h Handler) HandleMe10(inputs server.Input) (server.Output) {
 	return server.Output{
 		Data: user,
 		Code: 200,
-	}
+	}	
+}
 
+func (h Handler) HandleUsers(inputs server.Input) (o server.Output) {
+	provider := Provider{
+		DbConnection: h.DbConnection,
+	}
 	
+	users, err:= provider.GetAll()
+	if err != nil {
+		return server.Output{
+			Data: server.JsonError{
+				Error: err.Error(),
+				Code:  500,
+			},
+			Code: 500,
+		} 
+	}
+	return server.Output{
+		Data: users,
+		Code: 200,
+	}
 }
 
 func (h Handler) HandleReadUser(inputs server.Input) (filename string, placeholders map[string]string) {

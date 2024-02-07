@@ -1,12 +1,9 @@
 module github.com/kubestaff/golearning
 
-go 1.20
+go 1.21.2
 
-require (
-	github.com/kubestaff/web-helper v0.0.6
-	gorm.io/gorm v1.25.5
-)
-
+require github.com/kubestaff/web-helper v0.0.7
+	
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/glebarez/go-sqlite v1.21.2 // indirect
