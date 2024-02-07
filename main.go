@@ -36,8 +36,7 @@ func main() {
 		DbConnection: dbConn,
 	}
 
-	s.HandleJSON("/", homeHandler.HandleUsers)
-	s.HandleJSON("/user", userHandler.HandleUser)
+	s.HandleJSON("/users", userHandler.HandleUsers)
 	s.Handle("/setting", settingsHandler.HandleReadSetting)
 	s.Handle("/user-delete", userHandler.HandleDeleteUser)
 	
